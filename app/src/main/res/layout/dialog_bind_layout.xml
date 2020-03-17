@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="335dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            tools:text="为了保障您的账户安全，请绑定手机号，绑定后您的所有数据将保存至手机账户中，可使账号处于保护状态"
+            android:textColor="@color/c_7E809C"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_button"
+            android:layout_width="242dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="27dp"
+            android:background="@mipmap/green_btn_bg"
+            android:gravity="center"
+            android:text="去绑定"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="32dp"
+        android:background="@mipmap/dialog_close_icon" />
+</LinearLayout>

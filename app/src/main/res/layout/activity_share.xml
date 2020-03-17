@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".moneyactivity.ShareActivity"
+    android:background="@mipmap/share_bg"
+    >
+
+    <TextView
+        android:id="@+id/tv_btn"
+        android:layout_width="79dp"
+        android:layout_height="31dp"
+        android:background="@mipmap/sync_wechat_bg"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="26dp"
+        android:textSize="14dp"
+        android:textColor="@color/blue_51a5f7"
+        android:gravity="center"
+        android:text="@string/activitygz"
+        android:visibility="gone"
+        />
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:src="@mipmap/back_icon"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="52dp"
+        >
+        <ImageView
+            android:id="@+id/btn_share"
+            android:layout_width="129dp"
+            android:layout_height="38dp"
+            android:src="@mipmap/share_btn_icon"
+            />
+        <ImageView
+            android:id="@+id/ewm_btn"
+            android:layout_width="129dp"
+            android:layout_height="38dp"
+            android:src="@mipmap/ewm_btn_icon"
+            android:layout_marginLeft="14dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_copy"
+        android:layout_width="244dp"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/layout"
+        android:layout_marginBottom="19dp"
+        android:background="@drawable/invite_code_bg"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myyqm"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            />
+        <TextView
+            android:id="@+id/tv_yqm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="43ERF334"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/click_copy"
+            android:textColor="@color/yellow_fff"
+            android:textSize="13dp"
+            android:layout_marginLeft="10dp"
+            />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

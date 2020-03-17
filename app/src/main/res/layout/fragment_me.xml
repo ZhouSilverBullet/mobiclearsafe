@@ -27,7 +27,7 @@
                     android:layout_marginTop="20dp"
                     >
 
-                    <com.mobi.step.widget.RoundImageView
+                    <com.mobi.clearsafe.widget.RoundImageView
                         android:id="@+id/head_photo"
                         android:layout_width="56dp"
                         android:layout_height="56dp"

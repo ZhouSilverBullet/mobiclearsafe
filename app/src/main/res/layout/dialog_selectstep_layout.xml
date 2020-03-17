@@ -47,8 +47,8 @@
 
     </LinearLayout>
 
-    <com.mobi.step.widget.WheelView
+    <com.mobi.clearsafe.widget.WheelView
         android:id="@+id/wheelview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.mobi.step.widget.WheelView>
+        android:layout_height="wrap_content"></com.mobi.clearsafe.widget.WheelView>
 </LinearLayout>

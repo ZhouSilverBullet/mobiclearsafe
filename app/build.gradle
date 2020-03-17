@@ -6,11 +6,11 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
     defaultConfig {
-        applicationId "com.mobi.step"
+        applicationId "com.mobi.clearsafe"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 31
-        versionName "2.1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         repositories {
             flatDir {
@@ -74,7 +74,7 @@ android {
         schemaVersion 1
         //DaoSession、DaoMaster以及所有实体类的dao生成的目录,默认为你的entity所在的包名
         //daoPackage 包名
-        daoPackage 'com.mobi.step.greendao.gen'
+        daoPackage 'com.mobi.clearsafe.greendao.gen'
         //这就是我们上面说到的自定义生成数据库文件的目录了，可以将生成的文件放到我们的java目录中，而不是build中，这样就不用额外的设置资源目录了
         //工程路径
         targetGenDir 'src/main/java'

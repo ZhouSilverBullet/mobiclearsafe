@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <com.mobi.step.widget.LoadWebView
+    <com.mobi.clearsafe.widget.LoadWebView
         android:id="@+id/bd_wv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

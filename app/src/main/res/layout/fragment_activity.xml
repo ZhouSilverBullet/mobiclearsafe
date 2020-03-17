@@ -34,7 +34,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="30dp"
                 >
-                <com.mobi.step.widget.NoPaddingTextView
+                <com.mobi.clearsafe.widget.NoPaddingTextView
                     android:id="@+id/tv_gold_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:layout_alignParentBottom="true"
                     />
 
-                <com.mobi.step.widget.NoPaddingTextView
+                <com.mobi.clearsafe.widget.NoPaddingTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

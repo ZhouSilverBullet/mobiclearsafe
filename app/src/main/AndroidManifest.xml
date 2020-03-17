@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mobi.step">
+    package="com.mobi.clearsafe">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -301,7 +301,7 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:taskAffinity="com.mobi.step"
+            android:taskAffinity="com.mobi.clearsafe"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 开机自启动 -->
         <receiver
             android:name=".service.TodayStepBootCompleteReceiver"

@@ -149,9 +149,9 @@
 
     </LinearLayout>
 
-    <com.mobi.step.widget.LoadingTips
+    <com.mobi.clearsafe.widget.LoadingTips
         android:id="@+id/loadTips"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"></com.mobi.step.widget.LoadingTips>
+        android:background="@color/black"></com.mobi.clearsafe.widget.LoadingTips>
 </FrameLayout>

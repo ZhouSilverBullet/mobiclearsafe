@@ -22,9 +22,9 @@
                 android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-        <com.mobi.step.widget.LoadingTips
+        <com.mobi.clearsafe.widget.LoadingTips
             android:id="@+id/loadTips"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></com.mobi.step.widget.LoadingTips>
+            android:layout_height="match_parent"></com.mobi.clearsafe.widget.LoadingTips>
     </FrameLayout>
 </LinearLayout>

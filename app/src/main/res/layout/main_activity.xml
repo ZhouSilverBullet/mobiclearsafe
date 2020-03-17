@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mobi.step.widget.NoScrollViewPager
+    <com.mobi.clearsafe.widget.NoScrollViewPager
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/view_divid"></com.mobi.step.widget.NoScrollViewPager>
+        android:layout_above="@+id/view_divid"></com.mobi.clearsafe.widget.NoScrollViewPager>
 
     <View
         android:id="@+id/view_divid"

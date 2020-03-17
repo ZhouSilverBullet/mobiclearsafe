@@ -53,7 +53,7 @@
 
         <provider
             android:name="com.bytedance.sdk.openadsdk.TTFileProvider"
-            android:authorities="com.mobi.step.TTFileProvider"
+            android:authorities="com.mobi.clearsafe.TTFileProvider"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:ignore="WrongManifestParent">
@@ -63,7 +63,7 @@
         </provider>
         <provider
             android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"
-            android:authorities="com.mobi.step.TTMultiProvider"
+            android:authorities="com.mobi.clearsafe.TTMultiProvider"
             android:exported="false"
             tools:ignore="WrongManifestParent" />
         <!--广点通-->
@@ -88,7 +88,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.mobi.step.fileprovider"
+            android:authorities="com.mobi.clearsafe.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:ignore="WrongManifestParent">
@@ -98,7 +98,7 @@
         </provider>
         <!--<provider-->
         <!--android:name="com.mintegral.msdk.base.utils.MTGFileProvider"-->
-        <!--android:authorities="com.mobi.step.mtgFileProvider"-->
+        <!--android:authorities="com.mobi.clearsafe.mtgFileProvider"-->
         <!--android:exported="false"-->
         <!--android:grantUriPermissions="true">-->
         <!--<meta-data-->
@@ -111,7 +111,7 @@
 
         <provider
             android:name="com.sigmob.sdk.SigmobFileProvider"
-            android:authorities="com.mobi.step.sigprovider"
+            android:authorities="com.mobi.clearsafe.sigprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

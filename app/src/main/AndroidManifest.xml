@@ -16,12 +16,15 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_LOGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
+        android:appComponentFactory="mobi"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -30,12 +33,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:allowBackup,android:appComponentFactory,networkSecurityConfig"
-        android:appComponentFactory="mobi">
-        <activity android:name=".main.activity.FriendManagerActivity"
+        tools:replace="android:allowBackup,android:appComponentFactory,networkSecurityConfig">
+        <activity android:name=".ui.clear.CleanReportActivity"></activity>
+        <activity
+            android:name=".main.activity.FriendManagerActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="friendmanager" />
 
@@ -273,11 +276,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-        <!--<activity-->
-            <!--android:name="com.baidu.mobads.AppActivity"-->
-            <!--android:configChanges="keyboard|keyboardHidden|orientation"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+        </activity> <!-- <activity -->
+        <!-- android:name="com.baidu.mobads.AppActivity" -->
+        <!-- android:configChanges="keyboard|keyboardHidden|orientation" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar" /> -->
         <activity
             android:name=".push.MipushTestActivity"
             android:exported="true"
@@ -339,17 +341,15 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/rc_file_path" />
-        </provider>
-        <!--<provider-->
-            <!--android:name="com.baidu.mobads.openad.FileProvider"-->
-            <!--android:authorities="${applicationId}.bd.provider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/bd_file_paths" />-->
-        <!--</provider>-->
-
+        </provider> <!-- <provider -->
+        <!-- android:name="com.baidu.mobads.openad.FileProvider" -->
+        <!-- android:authorities="${applicationId}.bd.provider" -->
+        <!-- android:exported="false" -->
+        <!-- android:grantUriPermissions="true"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
+        <!-- android:resource="@xml/bd_file_paths" /> -->
+        <!-- </provider> -->
         <receiver android:name=".download.DownLoadCompleteReceiver" />
 
         <activity
@@ -361,20 +361,17 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-
-        <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="${applicationId}.fileprovider"-->
-            <!--android:exported="false"-->
-            <!--tools:replace="android:resource"-->
-            <!--android:grantUriPermissions="true"-->
-            <!--tools:ignore="WrongManifestParent">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/gdt_file_path1" />-->
-        <!--</provider>-->
-
+        </activity> <!-- <provider -->
+        <!-- android:name="android.support.v4.content.FileProvider" -->
+        <!-- android:authorities="${applicationId}.fileprovider" -->
+        <!-- android:exported="false" -->
+        <!-- tools:replace="android:resource" -->
+        <!-- android:grantUriPermissions="true" -->
+        <!-- tools:ignore="WrongManifestParent"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
+        <!-- android:resource="@xml/gdt_file_path1" /> -->
+        <!-- </provider> -->
         <activity android:name=".me.activity.MyWalletActivity">
             <intent-filter>
                 <action android:name="mywallet" />

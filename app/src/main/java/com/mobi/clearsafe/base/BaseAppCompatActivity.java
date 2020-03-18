@@ -15,7 +15,7 @@ import com.umeng.message.PushAgent;
 
 import me.jessyan.autosize.AutoSizeCompat;
 
-public class BaseAppCompatActivity extends RxAppCompatActivity {
+public abstract class BaseAppCompatActivity extends RxAppCompatActivity {
     protected AppManager appManager = AppManager.getInstance();
 
     @Override

@@ -58,6 +58,7 @@ import com.mobi.clearsafe.main.PleasantlyReceiveBean;
 import com.mobi.clearsafe.main.UpdateBean;
 import com.mobi.clearsafe.main.bean.ExitDialogBean;
 import com.mobi.clearsafe.main.bean.RedBean;
+import com.mobi.clearsafe.main.fragment.HomeFragment;
 import com.mobi.clearsafe.me.bean.UploadNikeName;
 import com.mobi.clearsafe.net.BaseObserver;
 import com.mobi.clearsafe.net.BaseResponse;
@@ -840,7 +841,7 @@ public class MainActivity extends BaseAppCompatActivity {
         mViewpager = findViewById(R.id.vp);
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         mFragmentList = new ArrayList<>();
-        mFragmentList.add(new mainFragment());
+        mFragmentList.add(new HomeFragment());
        mFragmentList.add(new AggregationFragment());
         mFragmentList.add(new activityFragment());
        // mFragmentList.add(new PlayFragment());

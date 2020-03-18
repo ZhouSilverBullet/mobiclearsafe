@@ -378,8 +378,8 @@
     <string name="string_receive_step">领取金币</string>
     <string name="string_sale_coins">售价:%s金币</string>
 
-
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

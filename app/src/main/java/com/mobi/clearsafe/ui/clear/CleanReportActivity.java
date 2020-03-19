@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.app.MyApplication;
 import com.mobi.clearsafe.base.BaseAppCompatActivity;
+import com.mobi.clearsafe.ui.clear.control.ClearWechatWrap;
 import com.mobi.clearsafe.ui.clear.data.Consts;
 import com.mobi.clearsafe.ui.clear.data.WechatBean;
 import com.mobi.clearsafe.ui.clear.util.FileManager;
@@ -35,7 +36,9 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     private TextView tvPoint;
     private ClearItemView civAd;
     private ClearItemView civFriend;
+    private ClearItemView civWechatGarbage;
     private Button btnClear;
+    private ClearWechatWrap clearWechatWrap;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, CleanReportActivity.class);
@@ -50,12 +53,13 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
         if (handler == null) {
             handler = new Handler(this);
         }
+        clearWechatWrap = new ClearWechatWrap();
+
         tvText = findViewById(R.id.tvText);
         initToolBar();
         initContent();
         initEvent();
 
-        //获取微信广告缓存
         findWechatClear();
 
         //启动扫描
@@ -69,41 +73,23 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     }
 
     private void findWechatClear() {
-
-        WechatClearUtil.findWxAdCache(bean -> {
-            handler.post(() -> {
-                civAd.setData(bean);
-            });
-        });
-
-        //获取微信朋友圈文件缓存
-        WechatClearUtil.findWxFriendCache(bean -> {
-            handler.post(() -> {
-                civFriend.setData(bean);
-            });
-        });
+        clearWechatWrap.findWechatClear(handler, civAd, civFriend, civWechatGarbage);
     }
 
     private void initEvent() {
-        btnClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        boolean check = civAd.isCheck();
-                        if (check) {
-                            for (File file : civAd.getFile()) {
-                                FileUtil.deleteFolderFile(file.getPath(), false);
-                            }
-                        }
-                        civAd.release();
-                        findWechatClear();
-                    }
-                });
+        btnClear.setOnClickListener(v -> {
 
-            }
+            execClearForWrap();
+
         });
+    }
+
+    private void execClearForWrap() {
+        clearWechatWrap.btnClear(() -> {
+            if (clearWechatWrap != null) {
+                clearWechatWrap.findWechatClear(handler, civAd, civFriend, civWechatGarbage);
+            }
+        }, civAd, civFriend, civWechatGarbage);
     }
 
     private void initContent() {
@@ -111,27 +97,24 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
         tvPoint = findViewById(R.id.tvPoint);
         civAd = findViewById(R.id.civAd);
         civFriend = findViewById(R.id.civFriend);
+        civWechatGarbage = findViewById(R.id.civWechatGarbage);
         btnClear = findViewById(R.id.btnClear);
 
-        civAd.setData(WechatClearUtil.createWechatBean(
+        civAd.initData(WechatClearUtil.createWechatBean(
                 getString(R.string.clear_wechat_ad_title),
                 R.mipmap.ic_launcher,
                 getString(R.string.clear_wechat_ad_dec)));
 
-        civFriend.setData(WechatClearUtil.createWechatBean(
+        civFriend.initData(WechatClearUtil.createWechatBean(
                 getString(R.string.clear_wechat_friend_title),
                 R.mipmap.ic_launcher,
                 getString(R.string.clear_wechat_friend_dec)));
 
-//        mRv = findViewById(R.id.rv);
-//        mRv.setLayoutManager(new LinearLayoutManager(this));
-//        //todo 有好几种adapter
-//        WechatAdapter adapter = new WechatAdapter();
-//        mRv.setAdapter(adapter);
+        civWechatGarbage.initData(WechatClearUtil.createWechatBean(
+                getString(R.string.clear_wechat_friend_title),
+                R.mipmap.ic_launcher,
+                getString(R.string.clear_wechat_friend_dec)));
 
-//        WechatBean wechatBean = new WechatBean();
-//        wechatBean.itemType = 1;
-//        adapter.addData(wechatBean);
     }
 
     private void initToolBar() {
@@ -151,7 +134,6 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
                 FileManager.scaFile(handler);
             }
         });
-
 
     }
 
@@ -218,7 +200,13 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
         return true;
     }
 
-//    @Override
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clearWechatWrap = null;
+    }
+
+    //    @Override
 //    public boolean onSupportNavigateUp() {
 //        finish();
 //        return super.onSupportNavigateUp();

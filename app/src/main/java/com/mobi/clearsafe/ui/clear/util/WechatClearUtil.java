@@ -83,9 +83,42 @@ public class WechatClearUtil {
         }
     }
 
+    public static void findWxCache(IAdCacheListener listener) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            File externalStorageDirectory = Environment.getExternalStorageDirectory();
+            File file = new File(externalStorageDirectory.getPath() + "/Zuizui/");
+            if (!file.exists()) {
+                return;
+            }
+            AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
+                List<File> list = new ArrayList<>();
+                FileUtil.findPositionFile(file, list, "cache", (findFile, length) -> {
+
+                    String[] fileSize0 = FileUtil.getFileSize0(length);
+                    if (listener != null) {
+                        WechatBean bean = new WechatBean();
+                        bean.itemType = 1;
+                        bean.name = MyApplication.getContext().getString(R.string.clear_wechat_friend_title);
+                        bean.dec = MyApplication.getContext().getString(R.string.clear_wechat_friend_dec);
+                        bean.sizeAndUnit = fileSize0;
+                        bean.isCheck = true;
+                        bean.icon = R.mipmap.ic_launcher;
+                        bean.fileList.add(findFile);
+                        bean.fileSize = length;
+
+                        listener.onFindLoad(bean);
+                    }
+                    Log.e(TAG, " fileSize0 ad " + fileSize0[0] + fileSize0[1]);
+                });
+                Log.e(TAG, " fileSize0 ad " + list);
+
+            });
+        }
+    }
+
     public static WechatBean createWechatBean(String name, int icon, String dec) {
         WechatBean wechatBean = new WechatBean();
-        wechatBean.fileSize = -1;
+        wechatBean.fileSize = 0;
         wechatBean.name = name;
         wechatBean.icon = icon;
         wechatBean.dec = dec;

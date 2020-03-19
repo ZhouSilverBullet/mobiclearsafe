@@ -43,11 +43,20 @@ public class ClearItemView extends FrameLayout {
 
     }
 
+    /**
+     * 先把title dec icon这三个元素设置好
+     *
+     * @param bean
+     */
+    public void initData(WechatBean bean) {
+        mBean = bean;
+    }
+
     public synchronized void setData(WechatBean bean) {
-        //mBean不为空的时候就复制
         if (mBean == null) {
-            this.mBean = bean;
+            throw new IllegalArgumentException("please init mBean call initData method !!");
         }
+        //mBean不为空的时候就复制
         if (bean != null) {
             //文件添加一下，可能是多个文件
             mBean.fileList.addAll(bean.fileList);
@@ -57,17 +66,16 @@ public class ClearItemView extends FrameLayout {
         tvClear.setText(mBean.name);
         tvDec.setText(mBean.dec);
 
-        //这个是初始化传入进来的
-        if (mBean.fileSize == -1) {
-            return;
-        }
-
+        //处理右边的状态
         pbLoad.setVisibility(GONE);
         cbMemory.setVisibility(VISIBLE);
-        if (mBean.fileSize < -1) {
+        if (mBean.fileSize <= 0) {
             cbMemory.setButtonDrawable(null);
             cbMemory.setText("无需清理");
+            cbMemory.setChecked(false);
+            mBean.isCheck = false;
         } else {
+            mBean.isCheck = true;
             cbMemory.setText(mBean.getFileStrSize());
         }
     }
@@ -81,6 +89,6 @@ public class ClearItemView extends FrameLayout {
     }
 
     public void release() {
-        mBean = null;
+        mBean.fileSize = 0;
     }
 }

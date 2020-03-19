@@ -6,4 +6,79 @@
     android:layout_height="match_parent"
     tools:context=".ui.clear.CleanReportActivity">
 
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsvScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_clear_layout" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="放心清理"
+                android:textSize="15sp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.mobi.clearsafe.ui.clear.widget.ClearItemView
+                        android:id="@+id/civWechatGarbage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.mobi.clearsafe.ui.clear.widget.ClearItemView
+                        android:id="@+id/civAd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.mobi.clearsafe.ui.clear.widget.ClearItemView
+                        android:id="@+id/civFriend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green_5a39"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="11111111111111"
+        android:textColor="@color/red_ff5b2e"
+        app:layout_constraintBottom_toBottomOf="@id/toolBar" />
+
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="一键清理"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

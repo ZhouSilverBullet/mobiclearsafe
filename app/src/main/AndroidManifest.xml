@@ -3,6 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mobi.clearsafe">
 
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -34,7 +48,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup,android:appComponentFactory,networkSecurityConfig">
-        <activity android:name=".ui.clear.CleanReportActivity"></activity>
+        <activity
+            android:theme="@style/SafeTheme"
+            android:name=".ui.clear.CleanReportActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".main.activity.FriendManagerActivity"
             android:configChanges="keyboard|orientation|screenSize"

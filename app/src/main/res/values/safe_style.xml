@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SafeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/c_1BA1FF</item>
+        <item name="android:windowAnimationStyle">@style/Animation_Activity</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+</resources>

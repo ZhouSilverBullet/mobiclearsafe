@@ -381,5 +381,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="clear_wechat_ad_dec">朋友圈广告，放心清理</string>
+    <string name="clear_wechat_ad_title">广告文件</string>
 
+    <string name="clear_wechat_friend_title">朋友圈缓存</string>
+    <string name="clear_wechat_friend_dec">可重新加载，放心清理</string>
 </resources>

@@ -47,6 +47,15 @@ public class StatusBarUtil {
      * @param colorId
      */
     public static void setStatusBarColor(Activity activity, int colorId) {
+        setStatusBarColor(activity, colorId, false);
+    }
+
+    /**
+     * 修改状态栏颜色，支持4.4以上版本
+     * @param activity
+     * @param colorId
+     */
+    public static void setStatusBarColor(Activity activity, int colorId, boolean isDrawableResource) {
 
         //Android6.0（API 23）以上，系统方法
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -58,7 +67,11 @@ public class StatusBarUtil {
             //设置状态栏颜色
             SystemBarTintManager tintManager = new SystemBarTintManager(activity);
             tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(colorId);
+            if (isDrawableResource) {
+                tintManager.setStatusBarTintResource(colorId);
+            } else  {
+                tintManager.setStatusBarTintResource(colorId);
+            }
         }
     }
 

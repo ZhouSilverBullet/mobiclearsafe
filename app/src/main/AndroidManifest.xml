@@ -14,8 +14,8 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
-    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -49,9 +49,15 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup,android:appComponentFactory,networkSecurityConfig">
         <activity
-            android:theme="@style/SafeTheme"
             android:name=".ui.clear.CleanReportActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SafeTheme">
+
+        </activity>
+        <activity
+            android:name=".ui.clear.CleanQReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SafeTheme">
 
         </activity>
         <activity
@@ -405,6 +411,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

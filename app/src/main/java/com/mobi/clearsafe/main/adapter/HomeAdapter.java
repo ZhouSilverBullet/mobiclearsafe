@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.main.adapter.data.ClearBean;
+import com.mobi.clearsafe.ui.clear.CleanQReportActivity;
 import com.mobi.clearsafe.ui.clear.CleanReportActivity;
 
 import java.util.ArrayList;
@@ -31,9 +32,17 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<ClearBean, BaseViewHo
                 ImageView ivIcon = helper.getView(R.id.ivIcon);
                 TextView tvName = helper.getView(R.id.tvName);
                 tvName.setText(item.clearName);
-                helper.itemView.setOnClickListener(v -> {
-                    CleanReportActivity.start(v.getContext());
-                });
+
+                if (helper.getAdapterPosition() == 3) {
+                    helper.itemView.setOnClickListener(v -> {
+                        CleanQReportActivity.start(v.getContext());
+                    });
+                } else {
+                    helper.itemView.setOnClickListener(v -> {
+                        CleanReportActivity.start(v.getContext());
+                    });
+                }
+
                 break;
         }
     }

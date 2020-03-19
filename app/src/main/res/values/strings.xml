@@ -389,4 +389,16 @@
 
     <string name="clear_wechat_title">垃圾文件</string>
     <string name="clear_wechat_dec">不含聊天记录，放心清理</string>
+
+
+
+    <string name="clear_qq_title">垃圾文件</string>
+    <string name="clear_qq_dec">不含聊天记录，放心清理</string>
+
+    <string name="clear_qq_friend_icon_title">好友头像</string>
+    <string name="clear_qq_friend_icon_dec">可重新加载，放心清理</string>
+
+    <string name="clear_qq_video_title">短视频缓存</string>
+    <string name="clear_qq_video_dec">看点视频缓存，放心清理</string>
+
 </resources>

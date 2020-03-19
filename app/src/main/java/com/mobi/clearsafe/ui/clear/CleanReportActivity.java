@@ -2,30 +2,28 @@ package com.mobi.clearsafe.ui.clear;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.mobi.clearsafe.R;
-import com.mobi.clearsafe.app.MyApplication;
 import com.mobi.clearsafe.base.BaseAppCompatActivity;
 import com.mobi.clearsafe.ui.clear.control.ClearWechatWrap;
+import com.mobi.clearsafe.ui.clear.control.ScanAnimatorContainer;
 import com.mobi.clearsafe.ui.clear.data.Consts;
-import com.mobi.clearsafe.ui.clear.data.WechatBean;
 import com.mobi.clearsafe.ui.clear.util.FileManager;
-import com.mobi.clearsafe.ui.clear.util.FileUtil;
 import com.mobi.clearsafe.ui.clear.util.WechatClearUtil;
 import com.mobi.clearsafe.ui.clear.widget.ClearItemView;
 import com.mobi.clearsafe.utils.StatusBarUtil;
 import com.mobi.clearsafe.utils.ToastUtils;
-
-import java.io.File;
 
 public class CleanReportActivity extends BaseAppCompatActivity implements Consts, Handler.Callback {
 
@@ -33,12 +31,16 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     private Handler handler;
     private TextView tvText;
     private TextView tvNum;
-    private TextView tvPoint;
+    private TextView tvUnit;
     private ClearItemView civAd;
     private ClearItemView civFriend;
     private ClearItemView civWechatGarbage;
     private Button btnClear;
     private ClearWechatWrap clearWechatWrap;
+    private View vScan;
+
+    public static final String TAG = "CleanReportActivity";
+    private ScanAnimatorContainer scanAnimatorContainer;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, CleanReportActivity.class);
@@ -48,6 +50,14 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            // Translucent status bar
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
         setContentView(R.layout.activity_clean_report);
 
         if (handler == null) {
@@ -69,11 +79,17 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
 
 //        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
 //        startActivity(intent);
+        startScanAnimal();
+    }
 
+    private void startScanAnimal() {
+        vScan = findViewById(R.id.vScan);
+        scanAnimatorContainer = new ScanAnimatorContainer(vScan);
+        scanAnimatorContainer.startAnimator();
     }
 
     private void findWechatClear() {
-        clearWechatWrap.findWechatClear(handler, civAd, civFriend, civWechatGarbage);
+        clearWechatWrap.findWechatClear(handler, tvNum, tvUnit, civAd, civFriend, civWechatGarbage);
     }
 
     private void initEvent() {
@@ -87,14 +103,14 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     private void execClearForWrap() {
         clearWechatWrap.btnClear(() -> {
             if (clearWechatWrap != null) {
-                clearWechatWrap.findWechatClear(handler, civAd, civFriend, civWechatGarbage);
+                clearWechatWrap.findWechatClear(handler, tvNum, tvUnit, civAd, civFriend, civWechatGarbage);
             }
         }, civAd, civFriend, civWechatGarbage);
     }
 
     private void initContent() {
         tvNum = findViewById(R.id.tvNum);
-        tvPoint = findViewById(R.id.tvPoint);
+        tvUnit = findViewById(R.id.tvUnit);
         civAd = findViewById(R.id.civAd);
         civFriend = findViewById(R.id.civFriend);
         civWechatGarbage = findViewById(R.id.civWechatGarbage);
@@ -111,9 +127,9 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
                 getString(R.string.clear_wechat_friend_dec)));
 
         civWechatGarbage.initData(WechatClearUtil.createWechatBean(
-                getString(R.string.clear_wechat_friend_title),
+                getString(R.string.clear_wechat_title),
                 R.mipmap.ic_launcher,
-                getString(R.string.clear_wechat_friend_dec)));
+                getString(R.string.clear_wechat_dec)));
 
     }
 
@@ -194,7 +210,12 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
             case 1000:
                 String[] obj = (String[]) msg.obj;
                 tvNum.setText(obj[0]);
-                tvPoint.setText(obj[1]);
+                tvUnit.setText(obj[1]);
+                break;
+            case 1001:
+                if (scanAnimatorContainer != null) {
+                    scanAnimatorContainer.stop();
+                }
                 break;
         }
         return true;
@@ -204,6 +225,7 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     protected void onDestroy() {
         super.onDestroy();
         clearWechatWrap = null;
+        scanAnimatorContainer.stop();
     }
 
     //    @Override

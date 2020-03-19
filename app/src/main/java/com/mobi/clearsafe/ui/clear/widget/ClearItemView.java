@@ -88,6 +88,10 @@ public class ClearItemView extends FrameLayout {
         return mBean.fileList;
     }
 
+    public long getSize() {
+        return mBean.fileSize;
+    }
+
     public void release() {
         mBean.fileSize = 0;
     }

@@ -37,6 +37,7 @@ public class WechatClearUtil {
                     bean.fileSize = folderSize;
 
                     listener.onFindLoad(bean);
+                    listener.onFinish();
                 }
                 Log.e(TAG, " fileSize0 ad " + fileSize0[0] + fileSize0[1]);
             });
@@ -48,6 +49,10 @@ public class WechatClearUtil {
      */
     public interface IAdCacheListener {
         void onFindLoad(WechatBean bean);
+
+        default void onFinish() {
+
+        }
     }
 
     public static void findWxFriendCache(IAdCacheListener listener) {
@@ -78,7 +83,9 @@ public class WechatClearUtil {
                     Log.e(TAG, " fileSize0 ad " + fileSize0[0] + fileSize0[1]);
                 });
                 Log.e(TAG, " fileSize0 ad " + list);
-
+                if (listener != null) {
+                    listener.onFinish();
+                }
             });
         }
     }
@@ -90,28 +97,37 @@ public class WechatClearUtil {
             if (!file.exists()) {
                 return;
             }
-            AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
-                List<File> list = new ArrayList<>();
-                FileUtil.findPositionFile(file, list, "cache", (findFile, length) -> {
+            AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+                int currentTime = 0;
 
-                    String[] fileSize0 = FileUtil.getFileSize0(length);
+                @Override
+                public void run() {
+                    List<File> list = new ArrayList<>();
+                    //时间次数
+
+                    FileUtil.findPositionFile(file, list, "cache", (findFile, length) -> {
+
+                        String[] fileSize0 = FileUtil.getFileSize0(length);
+                        if (listener != null) {
+                            WechatBean bean = new WechatBean();
+                            bean.itemType = 1;
+                            bean.name = MyApplication.getContext().getString(R.string.clear_wechat_title);
+                            bean.dec = MyApplication.getContext().getString(R.string.clear_wechat_dec);
+                            bean.sizeAndUnit = fileSize0;
+                            bean.isCheck = true;
+                            bean.icon = R.mipmap.ic_launcher;
+                            bean.fileList.add(findFile);
+                            bean.fileSize = length;
+
+                            listener.onFindLoad(bean);
+                        }
+                        Log.e(TAG, " fileSize0 ad " + fileSize0[0] + fileSize0[1]);
+                    });
+                    Log.e(TAG, " fileSize0 ad " + list);
                     if (listener != null) {
-                        WechatBean bean = new WechatBean();
-                        bean.itemType = 1;
-                        bean.name = MyApplication.getContext().getString(R.string.clear_wechat_friend_title);
-                        bean.dec = MyApplication.getContext().getString(R.string.clear_wechat_friend_dec);
-                        bean.sizeAndUnit = fileSize0;
-                        bean.isCheck = true;
-                        bean.icon = R.mipmap.ic_launcher;
-                        bean.fileList.add(findFile);
-                        bean.fileSize = length;
-
-                        listener.onFindLoad(bean);
+                        listener.onFinish();
                     }
-                    Log.e(TAG, " fileSize0 ad " + fileSize0[0] + fileSize0[1]);
-                });
-                Log.e(TAG, " fileSize0 ad " + list);
-
+                }
             });
         }
     }

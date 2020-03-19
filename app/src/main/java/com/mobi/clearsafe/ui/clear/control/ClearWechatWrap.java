@@ -2,14 +2,20 @@ package com.mobi.clearsafe.ui.clear.control;
 
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.widget.TextView;
 
+import com.mobi.clearsafe.ui.clear.data.WechatBean;
 import com.mobi.clearsafe.ui.clear.util.FileUtil;
 import com.mobi.clearsafe.ui.clear.util.WechatClearUtil;
 import com.mobi.clearsafe.ui.clear.widget.ClearItemView;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClearWechatWrap {
+
+    private AtomicInteger currentTime = new AtomicInteger(0);
+
     /**
      * 按钮触发清理
      *
@@ -40,30 +46,78 @@ public class ClearWechatWrap {
      * @param handler
      * @param civ
      */
-    public void findWechatClear(Handler handler, ClearItemView... civ) {
-        WechatClearUtil.findWxAdCache(bean -> {
-            handler.post(() -> {
-                civ[0].setData(bean);
-            });
+    public void findWechatClear(Handler handler, TextView tvNum, TextView tvUnit, ClearItemView... civ) {
+        WechatClearUtil.findWxAdCache(new WechatClearUtil.IAdCacheListener() {
+            @Override
+            public void onFindLoad(WechatBean bean) {
+                handler.post(() -> {
+                    civ[0].setData(bean);
+
+                    handleTextNum(tvNum, tvUnit, civ);
+
+                });
+            }
+
+            @Override
+            public void onFinish() {
+                addCurrent(handler);
+            }
         });
 
         //获取微信朋友圈文件缓存
-        WechatClearUtil.findWxFriendCache(bean -> {
-            handler.post(() -> {
-                if (civ.length > 1) {
-                    civ[1].setData(bean);
-                }
-            });
+        WechatClearUtil.findWxFriendCache(new WechatClearUtil.IAdCacheListener() {
+            @Override
+            public void onFindLoad(WechatBean bean) {
+                handler.post(() -> {
+                    if (civ.length > 1) {
+                        civ[1].setData(bean);
+
+                        handleTextNum(tvNum, tvUnit, civ);
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish() {
+                addCurrent(handler);
+            }
         });
         //获取微信垃圾
-        WechatClearUtil.findWxCache(bean -> {
-            handler.post(() -> {
-                if (civ.length > 2) {
-                    civ[2].setData(bean);
-                }
-            });
+        WechatClearUtil.findWxCache(new WechatClearUtil.IAdCacheListener() {
+            @Override
+            public void onFindLoad(WechatBean bean) {
+                handler.post(() -> {
+                    if (civ.length > 2) {
+                        civ[2].setData(bean);
+
+                        handleTextNum(tvNum, tvUnit, civ);
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish() {
+                addCurrent(handler);
+            }
         });
 
+    }
+
+    private void handleTextNum(TextView tvNum, TextView tvUnit, ClearItemView... civ) {
+        long size = 0L;
+        for (ClearItemView clearItemView : civ) {
+            size += clearItemView.getSize();
+        }
+        String[] fileSize0 = FileUtil.getFileSize0(size);
+        tvNum.setText(fileSize0[0]);
+        tvUnit.setText(fileSize0[1]);
+    }
+
+    public void addCurrent(Handler handler) {
+        currentTime.incrementAndGet();
+        if (currentTime.get() == 3) {
+            handler.sendEmptyMessageDelayed(1001, 2000);
+        }
     }
 
     public interface IClearCallback {

@@ -43,4 +43,29 @@
         <attr name="tdts_size_increment" format="dimension"/>
         <attr name="tdts_strip_vertical_offset" format="dimension"/>
     </declare-styleable>
+
+    <!-- 水波纹  wave attr -->
+    <attr name="mwhWaves" format="string|enum">
+        <enum name="MultiWave" value="-1"/>
+        <enum name="PairWave" value="-2"/>
+    </attr>
+    <attr name="mwhShape" format="enum">
+        <enum name="Rect" value="0"/>
+        <enum name="RoundRect" value="1"/>
+        <enum name="Oval" value="2"/>
+    </attr>
+    <declare-styleable name="MultiWaveHeader">
+        <attr name="mwhWaveHeight" format="dimension"/>
+        <attr name="mwhStartColor" format="color"/>
+        <attr name="mwhCloseColor" format="color"/>
+        <attr name="mwhIsRunning" format="boolean"/>
+        <attr name="mwhEnableFullScreen" format="boolean"/>
+        <attr name="mwhColorAlpha" format="fraction|float"/>
+        <attr name="mwhProgress" format="fraction|float"/>
+        <attr name="mwhVelocity" format="fraction|float"/>
+        <attr name="mwhGradientAngle" format="integer"/>
+        <attr name="mwhCornerRadius" format="dimension"/>
+        <attr name="mwhWaves"/>
+        <attr name="mwhShape"/>
+    </declare-styleable>
 </resources>

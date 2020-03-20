@@ -842,7 +842,7 @@ public class MainActivity extends BaseAppCompatActivity {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         mFragmentList = new ArrayList<>();
         mFragmentList.add(new HomeFragment());
-       mFragmentList.add(new AggregationFragment());
+//       mFragmentList.add(new AggregationFragment());
         mFragmentList.add(new activityFragment());
        // mFragmentList.add(new PlayFragment());
         mFragmentList.add(new meFragment());

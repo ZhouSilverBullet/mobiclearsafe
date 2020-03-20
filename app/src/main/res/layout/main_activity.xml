@@ -31,14 +31,14 @@
             android:text="@string/tab_main"
             />
 
-        <RadioButton
-            android:id="@+id/tabbar_bd"
-            style="@style/Custom.TabRadioButton"
-            android:background="@android:color/transparent"
-            android:button="@null"
-            android:drawableTop="@drawable/tab_main_selector"
-            android:text="@string/scratch_name"
-            />
+<!--        <RadioButton-->
+<!--            android:id="@+id/tabbar_bd"-->
+<!--            style="@style/Custom.TabRadioButton"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:button="@null"-->
+<!--            android:drawableTop="@drawable/tab_main_selector"-->
+<!--            android:text="@string/scratch_name"-->
+<!--            />-->
 
 
         <RadioButton

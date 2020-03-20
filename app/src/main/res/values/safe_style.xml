@@ -7,4 +7,12 @@
         <item name="colorAccent">@color/c_1BA1FF</item>
         <item name="android:windowAnimationStyle">@style/Animation_Activity</item>
     </style>
+
+    <!-- 水波纹  wave style -->
+    <style name="MultiWaveHeader">
+    </style>
+    <style name="MultiWaveHeader.Wave">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
 </resources>

@@ -11,6 +11,7 @@ import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.main.adapter.HomeAdapter;
 import com.mobi.clearsafe.main.adapter.data.ClearBean;
 import com.mobi.clearsafe.main.widget.MyRecyclerView;
+import com.mobi.clearsafe.ui.clear.GarbageActivity;
 import com.mobi.clearsafe.widget.LazyLoadFragment;
 
 import java.util.ArrayList;
@@ -49,7 +50,6 @@ public class HomeFragment extends LazyLoadFragment {
 
         View inflate = getLayoutInflater().inflate(R.layout.home_layout, null);
         homeAdapter.addHeaderView(inflate);
-        inflate.setVisibility(View.INVISIBLE);
 
         List<ClearBean> list = getRvGridData();
         homeAdapter.addData(list);
@@ -58,6 +58,13 @@ public class HomeFragment extends LazyLoadFragment {
             @Override
             public void onPercent(float percent) {
 
+            }
+        });
+
+        inflate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GarbageActivity.start(v.getContext());
             }
         });
     }

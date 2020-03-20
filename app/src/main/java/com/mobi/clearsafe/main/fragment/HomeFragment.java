@@ -1,12 +1,16 @@
 package com.mobi.clearsafe.main.fragment;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.main.adapter.HomeAdapter;
 import com.mobi.clearsafe.main.adapter.data.ClearBean;
+import com.mobi.clearsafe.main.widget.MyRecyclerView;
 import com.mobi.clearsafe.widget.LazyLoadFragment;
 
 import java.util.ArrayList;
@@ -15,7 +19,7 @@ import java.util.List;
 public class HomeFragment extends LazyLoadFragment {
 
     private ImageView ivIcon;
-    private RecyclerView rvGrid;
+    private MyRecyclerView rvGrid;
     private HomeAdapter homeAdapter;
 
     public HomeFragment() {
@@ -43,8 +47,19 @@ public class HomeFragment extends LazyLoadFragment {
         homeAdapter = new HomeAdapter();
         rvGrid.setAdapter(homeAdapter);
 
+        View inflate = getLayoutInflater().inflate(R.layout.home_layout, null);
+        homeAdapter.addHeaderView(inflate);
+        inflate.setVisibility(View.INVISIBLE);
+
         List<ClearBean> list = getRvGridData();
         homeAdapter.addData(list);
+
+        rvGrid.setOnScrollPercentListener(new MyRecyclerView.OnScrollPercentListener() {
+            @Override
+            public void onPercent(float percent) {
+
+            }
+        });
     }
 
     private List<ClearBean> getRvGridData() {

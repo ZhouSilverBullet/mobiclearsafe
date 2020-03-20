@@ -2,9 +2,11 @@ package com.mobi.clearsafe.ui.clear.control;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.RotateAnimation;
 
 import com.mobi.clearsafe.utils.UiUtils;
 
@@ -87,12 +89,10 @@ public class ScanAnimatorContainer {
     }
 
     public void stop() {
-        if (translationUpToDown.isRunning()) {
-            translationUpToDown.cancel();
-        }
-        if (translationDownToUp.isRunning()) {
-            translationDownToUp.cancel();
-        }
+        translationUpToDown.removeAllListeners();
+        translationDownToUp.removeAllListeners();
+        translationUpToDown.cancel();
+        translationDownToUp.cancel();
         view.setVisibility(View.GONE);
     }
 

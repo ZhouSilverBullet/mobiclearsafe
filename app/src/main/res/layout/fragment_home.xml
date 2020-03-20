@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".main.fragment.HomeFragment">
 
+    <!--    <include layout="@layout/home_layout" />-->
+
     <ImageView
         android:id="@+id/ivIcon"
         android:layout_width="120dp"
@@ -15,11 +17,10 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.mobi.clearsafe.main.widget.MyRecyclerView
         android:id="@+id/ivGrid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/ivIcon" />
+        android:layout_height="match_parent" />
 
 
 </android.support.constraint.ConstraintLayout>

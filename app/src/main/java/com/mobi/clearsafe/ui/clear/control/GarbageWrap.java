@@ -12,24 +12,70 @@ import android.os.Message;
 import com.mobi.clearsafe.app.MyApplication;
 import com.mobi.clearsafe.ui.clear.data.GarbageBean;
 import com.mobi.clearsafe.ui.clear.util.FileUtil;
-import com.mobi.clearsafe.ui.clear.util.IFileLengthListener;
+import com.mobi.clearsafe.ui.clear.util.GarbageClearUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author zhousaito
  * @version 1.0
  * @date 2020/3/20 10:54
  * @Dec 略
+ * <p>
+ * 按钮要数据
+ * top要数据
+ * 然后列表要数据
  */
 public class GarbageWrap {
+
+    public static final String TAG = "GarbageWrap";
+
+    //全部完成了
+    public static final int H_ALL_FINISH = 98;
+
+    public static final int H_PROGRESS = 99;
+    public static final int H_GARBAGE_DATA_FINISH = 100;
+    //无效安装包
+    public static final int H_INVALID_INSTALLATION_PACKAGE_DATA = 101;
+    //无效安装包扫描完成
+    public static final int H_INVALID_INSTALLATION_PACKAGE_DATA_FINISH = 102;
+
+    //系统垃圾
+    public static final int H_SYSTEM_GARBAGE_DATA = 103;
+    //系统垃圾扫描完成
+    public static final int H_SYSTEM_GARBAGE_DATA_FINISH = 104;
+
+    //广告垃圾
+    public static final int H_AD_GARBAGE_DATA = 105;
+    //广告垃圾扫描完成
+    public static final int H_AD_GARBAGE_DATA_FINISH = 106;
+
+    //卸载垃圾
+    public static final int H_UNINSTALL_GARBAGE_DATA = 107;
+    //卸载残留完成
+    public static final int H_UNINSTALL_GARBAGE_DATA_FINISH = 108;
+
+
     private Context context;
     private Handler handler;
     private PackageManager packageManager;
+
+    private AtomicLong allSizeAic = new AtomicLong(0);
+
+    /**
+     * 完成的个数
+     */
+    private AtomicLong finishCount = new AtomicLong(0);
+    //任务完成的数量，是5个
+    public static final int TASK_FINISH_MAX_COUNT = 5;
+
+//    private AtomicLong garbageSizeAic = new AtomicLong();
+//    private AtomicLong invalidSizeAic = new AtomicLong();
+
 
     public GarbageWrap(Context context, Handler handler) {
         this.context = context.getApplicationContext();
@@ -77,12 +123,40 @@ public class GarbageWrap {
 //        });
 //    }
 
-    public void scan2() {
+    public void scan() {
+
+        findCache();
+        findSystemGarbage();
+        findAdGarbage();
+        findUninstallGarbage();
+        findApk();
+
+    }
+
+    private void findUninstallGarbage() {
+        AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
+            sendMessage(null, H_UNINSTALL_GARBAGE_DATA_FINISH);
+        });
+    }
+
+    private void findAdGarbage() {
+        AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
+            sendMessage(null, H_AD_GARBAGE_DATA_FINISH);
+        });
+    }
+
+    private void findSystemGarbage() {
+        AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
+            sendMessage(null, H_SYSTEM_GARBAGE_DATA_FINISH);
+        });
+    }
+
+
+    private void findCache() {
         AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {
             packageManager = MyApplication.PM;
             List<ApplicationInfo> installedApps = MyApplication.INSTALLED_APPS;
             int applicationInfosSize = installedApps.size();
-
 
             List<GarbageBean> list = new Vector<>();
 
@@ -95,7 +169,6 @@ public class GarbageWrap {
 
                 GarbageBean garbageBean = new GarbageBean();
                 garbageBean.packageName = packageName;
-//                garbageBean.name = applicationInfo.name;
                 //获取应用的名字
                 garbageBean.name = applicationInfo.loadLabel(packageManager).toString();
                 garbageBean.imageDrawable = drawable;
@@ -115,13 +188,19 @@ public class GarbageWrap {
                         continue;
                     }
 
-                    //把garbageBean传进去
-                    findCacheFile(garbageBean, file, fileList, (bean, length) -> {
-                        bean.fileSize = length;
-                        bean.sizeAndUnit = FileUtil.getFileSize0(length);
-                        list.add(bean);
-                    });
+                    if (!garbageBean.isSystemApp) {
+                        list.add(garbageBean);
 
+                        //把garbageBean传进去
+                        findCacheFile(garbageBean, file, fileList, (bean, length) -> {
+                            bean.fileSize = length;
+                            bean.sizeAndUnit = FileUtil.getFileSize0(length);
+
+//                            long allSize = GarbageClearUtil.getAllSize(list);
+
+                            sendLengthToHandler(length);
+                        });
+                    }
                 }
             }
 
@@ -129,10 +208,39 @@ public class GarbageWrap {
             Collections.sort(list);
 
             if (handler != null) {
+
+//                Log.e(TAG, "--> <--" + allSizeAic.get());
+//                Message message = Message.obtain();
+//                message.obj = list;
+//                message.what = H_GARBAGE_DATA;
+//                handler.sendMessage(message);
+                sendMessage(list, H_GARBAGE_DATA_FINISH);
+            }
+        });
+    }
+
+
+    private void findApk() {
+        GarbageClearUtil.findApk(new GarbageClearUtil.IGarbageListener() {
+            @Override
+            public void onFindLoad(GarbageBean bean) {
+
+                //发送长度数据给外面
+                sendLengthToHandler(bean.fileSize);
+
+                //发送bean给到外面处理
                 Message message = Message.obtain();
-                message.obj = list;
-                message.what = 100;
+                message.obj = bean;
+                message.what = H_INVALID_INSTALLATION_PACKAGE_DATA;
                 handler.sendMessage(message);
+
+            }
+
+            @Override
+            public void onFinish() {
+                //无效安装包完成
+//                handler.sendEmptyMessage(H_INVALID_INSTALLATION_PACKAGE_DATA_FINISH);
+                sendMessage(null, H_INVALID_INSTALLATION_PACKAGE_DATA_FINISH);
             }
         });
     }
@@ -158,6 +266,33 @@ public class GarbageWrap {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void sendMessage(Object obj, int what) {
+        Message message = Message.obtain();
+        message.obj = obj;
+        message.what = what;
+        handler.sendMessage(message);
+
+        finishCount.incrementAndGet();
+
+        if (finishCount.get() == TASK_FINISH_MAX_COUNT) {
+            //发送任务全部完成消息
+            Message msg = Message.obtain();
+            msg.obj = obj;
+            msg.what = H_ALL_FINISH;
+            handler.sendMessage(msg);
+        }
+    }
+
+    private void sendLengthToHandler(long length) {
+        //重新设置这个的长度
+        allSizeAic.set(allSizeAic.get() + length);
+
+        Message message = Message.obtain();
+        message.obj = allSizeAic;
+        message.what = H_PROGRESS;
+        handler.sendMessage(message);
     }
 
     public interface IGarbageLengthListener {

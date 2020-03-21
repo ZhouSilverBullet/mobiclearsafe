@@ -152,4 +152,16 @@ public class GarbageClearUtil {
         }
     }
 
+    public static long getAllSize(List<GarbageBean> list) {
+        long allSize = 0L;
+        if (list == null || list.size() == 0) {
+            return allSize;
+        }
+
+        for (GarbageBean garbageBean : list) {
+            allSize += garbageBean.fileSize;
+        }
+        return allSize;
+    }
+
 }

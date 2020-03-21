@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.mobi.clearsafe.R;
@@ -23,12 +24,20 @@ import com.mobi.clearsafe.ui.clear.adapter.GarbageAdapter;
 import com.mobi.clearsafe.ui.clear.control.GarbageWrap;
 import com.mobi.clearsafe.ui.clear.data.GarbageBean;
 import com.mobi.clearsafe.ui.clear.data.GarbageHeaderBean;
+import com.mobi.clearsafe.ui.clear.util.FileUtil;
 import com.mobi.clearsafe.ui.clear.util.GarbageClearUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import io.reactivex.annotations.NonNull;
+
+import static com.mobi.clearsafe.ui.clear.control.GarbageWrap.H_ALL_FINISH;
+import static com.mobi.clearsafe.ui.clear.control.GarbageWrap.H_GARBAGE_DATA_FINISH;
+import static com.mobi.clearsafe.ui.clear.control.GarbageWrap.H_INVALID_INSTALLATION_PACKAGE_DATA;
+import static com.mobi.clearsafe.ui.clear.control.GarbageWrap.H_INVALID_INSTALLATION_PACKAGE_DATA_FINISH;
+import static com.mobi.clearsafe.ui.clear.control.GarbageWrap.H_PROGRESS;
 
 public class GarbageActivity extends AppCompatActivity implements Handler.Callback {
 
@@ -40,6 +49,9 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
     private Toolbar mToolBar;
 
     private NestedScrollView nsvScroll;
+
+    private TextView tvNum;
+    private TextView tvUnit;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, GarbageActivity.class);
@@ -60,39 +72,45 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
         setContentView(R.layout.activity_garbage);
         handler = new Handler(this);
         GarbageWrap garbageWrap = new GarbageWrap(this, handler);
-        garbageWrap.scan2();
+        garbageWrap.scan();
 
         initToolBar();
         initRv();
+        initOtherIds();
 
-        GarbageClearUtil.findApk(new GarbageClearUtil.IGarbageListener() {
-            @Override
-            public void onFindLoad(GarbageBean bean) {
-                handler.post(() -> {
-                    GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
-                    garbageHeaderBean.getSubItems().add(bean);
-                    garbageAdapter.notifyDataSetChanged();
-                });
-            }
+//        GarbageClearUtil.findApk(new GarbageClearUtil.IGarbageListener() {
+//            @Override
+//            public void onFindLoad(GarbageBean bean) {
+//                handler.post(() -> {
+//                    GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
+//                    garbageHeaderBean.getSubItems().add(bean);
+//                    garbageAdapter.notifyDataSetChanged();
+//                });
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                handler.post(() -> {
+//                    GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
+//                    long allSize = 0L;
+//                    for (GarbageBean subItem : garbageHeaderBean.getSubItems()) {
+//                        //选中了才进行计算
+//                        if (subItem.isCheck) {
+//                            allSize += subItem.fileSize;
+//                        }
+//                    }
+//                    garbageHeaderBean.isLoading = false;
+//                    garbageHeaderBean.allSize = allSize;
+//                    garbageAdapter.notifyDataSetChanged();
+//                });
+//            }
+//        });
 
-            @Override
-            public void onFinish() {
-                handler.post(() -> {
-                    GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
-                    long allSize = 0L;
-                    for (GarbageBean subItem : garbageHeaderBean.getSubItems()) {
-                        //选中了才进行计算
-                        if (subItem.isCheck) {
-                            allSize += subItem.fileSize;
-                        }
-                    }
-                    garbageHeaderBean.isLoading = false;
-                    garbageHeaderBean.allSize = allSize;
-                    garbageAdapter.notifyDataSetChanged();
-                });
-            }
-        });
+    }
 
+    private void initOtherIds() {
+        tvNum = findViewById(R.id.tvNum);
+        tvUnit = findViewById(R.id.tvUnit);
     }
 
     private void initToolBar() {
@@ -169,40 +187,94 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
 
     @Override
     public boolean handleMessage(Message msg) {
-        List<MultiItemEntity> data = garbageAdapter.getData();
 
-        List<GarbageBean> list = (List<GarbageBean>) msg.obj;
-        for (MultiItemEntity datum : data) {
-            if (datum instanceof GarbageHeaderBean) {
-                GarbageHeaderBean bean = (GarbageHeaderBean) datum;
-                if (bean.headerType == 0) {
+        switch (msg.what) {
+            case H_PROGRESS: {
+                //1152905858
+                //1063357649
+                AtomicLong allSizeAic = (AtomicLong) msg.obj;
 
-                    long allSize = 0L;
-                    for (GarbageBean garbageBean : list) {
-                        allSize += garbageBean.fileSize;
-                    }
-                    //数据回来了，重置一下状态
-                    bean.isLoading = false;
-                    bean.allSize = allSize;
-                    bean.setSubItems(list);
-                } else if (bean.headerType == 1) {
-                    List<GarbageBean> list2 = new ArrayList<>();
-                    list2.add(new GarbageBean());
-                    list2.add(new GarbageBean());
-                    list2.add(new GarbageBean());
-                    list2.add(new GarbageBean());
-                    list2.add(new GarbageBean());
-                    list2.add(new GarbageBean());
-                    list2.add(new GarbageBean());
-                    bean.setSubItems(list2);
-                }
+                computeAllSize(allSizeAic.get());
+
             }
+            break;
+            case H_GARBAGE_DATA_FINISH: {
+                List<MultiItemEntity> data = garbageAdapter.getData();
+
+                List<GarbageBean> list = (List<GarbageBean>) msg.obj;
+                for (MultiItemEntity datum : data) {
+                    if (datum instanceof GarbageHeaderBean) {
+                        GarbageHeaderBean bean = (GarbageHeaderBean) datum;
+                        if (bean.headerType == 0) {
+
+                            long allSize = GarbageClearUtil.getAllSize(list);
+                            //数据回来了，重置一下状态
+                            bean.isLoading = false;
+                            bean.allSize = allSize;
+                            bean.setSubItems(list);
+
+                        } else if (bean.headerType == 1) {
+                            List<GarbageBean> list2 = new ArrayList<>();
+                            list2.add(new GarbageBean());
+                            list2.add(new GarbageBean());
+                            list2.add(new GarbageBean());
+                            list2.add(new GarbageBean());
+                            list2.add(new GarbageBean());
+                            list2.add(new GarbageBean());
+                            list2.add(new GarbageBean());
+                            bean.setSubItems(list2);
+                        }
+                    }
+                }
+
+                garbageAdapter.setNewData(data);
+            }
+            break;
+
+            case H_INVALID_INSTALLATION_PACKAGE_DATA: {
+                GarbageBean bean = (GarbageBean) msg.obj;
+                GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
+                garbageHeaderBean.getSubItems().add(bean);
+                garbageAdapter.notifyDataSetChanged();
+            }
+            break;
+            case H_INVALID_INSTALLATION_PACKAGE_DATA_FINISH: {
+                GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
+                long allSize = 0L;
+                for (GarbageBean subItem : garbageHeaderBean.getSubItems()) {
+                    //选中了才进行计算
+                    if (subItem.isCheck) {
+                        allSize += subItem.fileSize;
+                    }
+                }
+                garbageHeaderBean.isLoading = false;
+                garbageHeaderBean.allSize = allSize;
+                garbageAdapter.notifyDataSetChanged();
+            }
+            break;
+
+            case H_ALL_FINISH: {
+                long allSize = 0L;
+                for (MultiItemEntity datum : garbageAdapter.getData()) {
+                    if (datum instanceof GarbageHeaderBean) {
+                        allSize += ((GarbageHeaderBean) datum).allSize;
+                    }
+                }
+                computeAllSize(allSize);
+            }
+            break;
         }
 
-        garbageAdapter.setNewData(data);
 //        garbageAdapter.expandAll();
 
         return false;
+    }
+
+    private void computeAllSize(long allSize) {
+        String[] fileSize0 = FileUtil.getFileSize0(allSize);
+        tvNum.setText(fileSize0[0]);
+        tvUnit.setText(fileSize0[1]);
+        Log.e(TAG, "allSizeAic : " + allSize);
     }
 
 

@@ -11,31 +11,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/item_clear_layout" />
+            <include layout="@layout/clear_tab_layout" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="放心清理"
-                android:textSize="15sp" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="10dp"
-                app:cardCornerRadius="5dp">
+                android:layout_height="match_parent"
+                android:layout_marginTop="200dp"
+                android:background="@drawable/white_cron18_selector"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="vertical">
 
                     <com.mobi.clearsafe.ui.clear.widget.ClearItemView
@@ -43,19 +39,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/c_eeeff0" />
+
                     <com.mobi.clearsafe.ui.clear.widget.ClearItemView
                         android:id="@+id/civAd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/c_eeeff0" />
 
                     <com.mobi.clearsafe.ui.clear.widget.ClearItemView
                         android:id="@+id/civFriend"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.v7.widget.Toolbar
@@ -66,19 +72,23 @@
         android:fitsSystemWindows="true"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="11111111111111"
-        android:textColor="@color/red_ff5b2e"
-        app:layout_constraintBottom_toBottomOf="@id/toolBar" />
+        android:layout_height="66dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <Button
-        android:id="@+id/btnClear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="一键清理"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/btn_corn4_selector"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

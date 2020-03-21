@@ -65,7 +65,7 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
         }
         clearWechatWrap = new ClearWechatWrap();
 
-        tvText = findViewById(R.id.tvText);
+//        tvText = findViewById(R.id.tvText);
         initToolBar();
         initContent();
         initEvent();
@@ -83,9 +83,9 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     }
 
     private void startScanAnimal() {
-        vScan = findViewById(R.id.vScan);
-        scanAnimatorContainer = new ScanAnimatorContainer(vScan);
-        scanAnimatorContainer.startAnimator();
+//        vScan = findViewById(R.id.vScan);
+//        scanAnimatorContainer = new ScanAnimatorContainer(vScan);
+//        scanAnimatorContainer.startAnimator();
     }
 
     private void findWechatClear() {
@@ -137,7 +137,7 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
         mToolBar = findViewById(R.id.toolBar);
         mToolBar.setTitle("微信清理");
         mToolBar.setTitleTextColor(getResources().getColor(R.color.white));
-        mToolBar.setNavigationIcon(R.mipmap.back_icon);
+        mToolBar.setNavigationIcon(R.drawable.white_return);
 
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -170,7 +170,7 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
                 Bundle data = msg.getData();
 //                long totalCacheSize = data.getLong(Consts.KEY_TOTAL_CACHESIZE);
                 String name = data.getString(Consts.KEY_NAME);
-                tvText.setText("正在扫描: " + name);
+//                tvText.setText("正在扫描: " + name);
                 break;
             case MSG_PROGRESSBAR_SET_MAX:
                 int max = (int) msg.obj;
@@ -225,7 +225,7 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     protected void onDestroy() {
         super.onDestroy();
         clearWechatWrap = null;
-        scanAnimatorContainer.stop();
+//        scanAnimatorContainer.stop();
     }
 
     //    @Override

@@ -11,14 +11,25 @@
         android:padding="15dp"
         android:text="11.1M"
         android:textSize="15sp"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pbLoad"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="11.1M"
+        android:padding="5dp"
+        android:textSize="15sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvText"
-        android:paddingLeft="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
         android:text="系统垃圾"
         android:textColor="#333333"
         android:textSize="15sp"
@@ -38,8 +49,8 @@
         app:layout_constraintTop_toTopOf="@id/tvText" />
 
     <View
-        app:layout_constraintTop_toBottomOf="@id/cbText"
-        android:background="@color/c_eeeff0"
         android:layout_width="match_parent"
-        android:layout_height="1dp" />
+        android:layout_height="1dp"
+        android:background="@color/c_eeeff0"
+        app:layout_constraintTop_toBottomOf="@id/cbText" />
 </android.support.constraint.ConstraintLayout>

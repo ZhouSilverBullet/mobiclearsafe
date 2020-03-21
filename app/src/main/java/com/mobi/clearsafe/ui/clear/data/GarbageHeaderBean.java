@@ -12,9 +12,12 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 public class GarbageHeaderBean extends AbstractExpandableItem<GarbageBean> implements MultiItemEntity {
     public String name;
     public int level;
-    public int isCheck;
+    public boolean isCheck = true;
     public long allSize;
     public int headerType;
+
+    //正在加载中一个状态
+    public boolean isLoading = true;
 
     @Override
     public int getLevel() {

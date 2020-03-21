@@ -1,5 +1,10 @@
 package com.mobi.clearsafe.ui.clear.util;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -203,4 +208,35 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 后缀名
+     *
+     * @param file
+     * @param files
+     * @param suffix 后缀名 .apk 什么的
+     * @param listener
+     */
+    public static void findSuffixFile(File file, List<File> files, String suffix, IFileListener listener) {
+        long size = 0;
+        try {
+            java.io.File[] fileList = file.listFiles();
+            for (int i = 0; i < fileList.length; i++) {
+                if (fileList[i].isDirectory()) {
+                    findSuffixFile(fileList[i], files, suffix, listener);
+                } else  {
+                    if (fileList[i].getName().endsWith(suffix)) {
+                        files.add(fileList[i]);
+                        listener.onFile(fileList[i], fileList[i].length());
+                        return;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
 }

@@ -1,6 +1,9 @@
 package com.mobi.clearsafe.app;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
@@ -19,6 +22,8 @@ import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+
+import java.util.List;
 
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
@@ -44,6 +49,9 @@ public class MyApplication extends MultiDexApplication {
 
     private static Context mContext;
 
+    public static PackageManager PM;
+    public static List<ApplicationInfo> INSTALLED_APPS;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,6 +69,9 @@ public class MyApplication extends MultiDexApplication {
             TTAdManagerHolder.singleInit(getApplicationContext(), "5036888", "全民走路_android");
         }
         SDKManager.InitValPub(this);
+        PM = getPackageManager();
+        INSTALLED_APPS = PM.getInstalledApplications(0);
+
     }
 
     @Override

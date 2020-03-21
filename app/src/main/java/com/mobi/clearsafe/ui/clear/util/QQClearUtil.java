@@ -68,6 +68,9 @@ public class QQClearUtil {
             File externalStorageDirectory = Environment.getExternalStorageDirectory();
             File file = new File(externalStorageDirectory.getPath() + PATH_QQ_ICON);
             if (!file.exists()) {
+                if (listener != null) {
+                    listener.onFinish();
+                }
                 return;
             }
             AsyncTask.THREAD_POOL_EXECUTOR.execute(() -> {

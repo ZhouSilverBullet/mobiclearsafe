@@ -2,7 +2,9 @@ package com.mobi.clearsafe.ui.clear.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -11,6 +13,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.ui.clear.data.GarbageBean;
 import com.mobi.clearsafe.ui.clear.data.GarbageHeaderBean;
+import com.mobi.clearsafe.ui.clear.util.FileUtil;
 
 import java.util.List;
 
@@ -38,6 +41,12 @@ public class GarbageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                 TextView tvClear = helper.getView(R.id.tvClear);
                 tvClear.setText(garbageBean.name);
                 ivIcon.setImageDrawable(garbageBean.imageDrawable);
+
+                CheckBox cbMemory = helper.getView(R.id.cbMemory);
+                cbMemory.setText(garbageBean.getFileStrSize());
+                cbMemory.setChecked(garbageBean.isCheck);
+                TextView tvDec = helper.getView(R.id.tvDec);
+                tvDec.setText(garbageBean.dec);
             }
 
             break;
@@ -46,12 +55,24 @@ public class GarbageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
 //                TextView tvClear = helper.getView(R.id.tvClear);
                 TextView tvText = helper.getView(R.id.tvText);
                 ImageView ivImage = helper.getView(R.id.ivImage);
+                ProgressBar pbLoad = helper.getView(R.id.pbLoad);
+                CheckBox cbText = helper.getView(R.id.cbText);
+
 
                 GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) item;
+
+                //设置状态
+                pbLoad.setVisibility(garbageHeaderBean.isLoading ? View.VISIBLE : View.GONE);
+                cbText.setVisibility(garbageHeaderBean.isLoading ? View.INVISIBLE : View.VISIBLE);
 
                 ivImage.setRotation(garbageHeaderBean.isExpanded() ? 0 : 180);
 
                 tvText.setText(garbageHeaderBean.name);
+
+                String[] fileSize0 = FileUtil.getFileSize0(garbageHeaderBean.allSize);
+                cbText.setText(fileSize0[0] + fileSize0[1]);
+                cbText.setChecked(garbageHeaderBean.isCheck);
+
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

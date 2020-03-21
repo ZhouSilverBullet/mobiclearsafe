@@ -30,7 +30,7 @@ public class MyRecyclerView extends RecyclerView {
 
     public MyRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        dp120 = UiUtils.dp2px(context, 120);
+        dp120 = UiUtils.dp2px(context, 300);
     }
 
     @Override

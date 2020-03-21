@@ -17,54 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <View
-                android:id="@+id/vLine"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:background="@drawable/clear_blue_selector"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.mobi.clearsafe.ui.clear.widget.wave.MultiWaveHeader
-                android:id="@+id/waveHeader"
-                android:layout_width="match_parent"
-                android:layout_height="190dp"
-                app:mwhColorAlpha="0.9" />
-
-            <LinearLayout
-                android:id="@+id/llTop"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tvNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:singleLine="true"
-                    android:text="11"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"
-                    android:textSize="50sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:textColor="@color/red_593b3b" />
-
-                <TextView
-                    android:id="@+id/tvUnit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="GB"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:layout_constraintLeft_toRightOf="@id/tvNum"
-                    app:layout_constraintTop_toTopOf="@id/tvNum"
-                    tools:textColor="@color/red_593b3b" />
-            </LinearLayout>
+            <include layout="@layout/clear_tab_layout" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"

@@ -19,6 +19,10 @@
 
             <include layout="@layout/clear_tab_layout" />
 
+            <include
+                layout="@layout/clear_tab_ok_layout"
+                android:visibility="gone" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
@@ -54,6 +58,8 @@
             android:layout_marginTop="12dp"
             android:layout_marginRight="25dp"
             android:background="@drawable/btn_corn4_selector"
+            android:enabled="false"
+            android:text="加载中..."
             android:textColor="@color/white" />
     </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.mobi.clearsafe.ui.clear.adapter;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +25,11 @@ import java.util.List;
  * @Dec 略
  */
 public class GarbageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
+    public long dataAllSize;
+    /**
+     * 加载结束
+     */
+    public boolean isLoadFinish;
 
     public GarbageAdapter(List<MultiItemEntity> data) {
         super(data);
@@ -44,7 +50,26 @@ public class GarbageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
 
                 CheckBox cbMemory = helper.getView(R.id.cbMemory);
                 cbMemory.setText(garbageBean.getFileStrSize());
+
+                cbMemory.setOnCheckedChangeListener(null);
                 cbMemory.setChecked(garbageBean.isCheck);
+                cbMemory.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    garbageBean.isCheck = isChecked;
+
+                    notifyDataSetChanged();
+
+                    if (isChecked) {
+                        dataAllSize += garbageBean.fileSize;
+                    } else {
+                        dataAllSize -= garbageBean.fileSize;
+                    }
+
+                    if (checkedListener != null) {
+                        String[] fileSize01 = FileUtil.getFileSize0(dataAllSize);
+                        checkedListener.onAllChecked(dataAllSize, fileSize01);
+                    }
+                });
+
                 TextView tvDec = helper.getView(R.id.tvDec);
                 tvDec.setText(garbageBean.dec);
             }
@@ -59,7 +84,7 @@ public class GarbageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                 CheckBox cbText = helper.getView(R.id.cbText);
 
 
-                GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) item;
+                final GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) item;
 
                 //设置状态
                 pbLoad.setVisibility(garbageHeaderBean.isLoading ? View.VISIBLE : View.GONE);
@@ -71,25 +96,65 @@ public class GarbageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
 
                 String[] fileSize0 = FileUtil.getFileSize0(garbageHeaderBean.allSize);
                 cbText.setText(fileSize0[0] + fileSize0[1]);
+                cbText.setOnCheckedChangeListener(null);
                 cbText.setChecked(garbageHeaderBean.isCheck);
+
+                cbText.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (!isLoadFinish) {
+                        return;
+                    }
+
+                    if (isChecked) {
+                        for (GarbageBean subItem : garbageHeaderBean.getSubItems()) {
+                            subItem.isCheck = true;
+                            dataAllSize += subItem.fileSize;
+                        }
+                    } else {
+                        for (GarbageBean subItem : garbageHeaderBean.getSubItems()) {
+                            subItem.isCheck = false;
+                            dataAllSize -= subItem.fileSize;
+                        }
+                    }
+                    garbageHeaderBean.isCheck = isChecked;
+                    notifyDataSetChanged();
+                    if (checkedListener != null) {
+                        String[] fileSize01 = FileUtil.getFileSize0(dataAllSize);
+                        checkedListener.onAllChecked(dataAllSize, fileSize01);
+                    }
+                });
 
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (!isLoadFinish) {
+                           return;
+                        }
                         int pos = helper.getAdapterPosition();
                         if (garbageHeaderBean.isExpanded()) {
                             collapse(pos + getHeaderLayoutCount(), false);
                         } else {
                             expand(pos + getHeaderLayoutCount(), true);
                         }
-//                        garbageHeaderBean.setExpanded(!garbageHeaderBean.isExpanded());
-//                        notifyDataSetChanged();
                     }
                 });
             }
 
             break;
         }
+
+    }
+
+    private IGAdapterCheckedListener checkedListener;
+
+    public void setCheckedListener(IGAdapterCheckedListener checkedListener) {
+        this.checkedListener = checkedListener;
+    }
+
+    public interface IGAdapterCheckedListener {
+
+        void onAllChecked(long allSize, String[] data);
+
+//        void onSingleChecked(long allSize, String[] data);
 
     }
 

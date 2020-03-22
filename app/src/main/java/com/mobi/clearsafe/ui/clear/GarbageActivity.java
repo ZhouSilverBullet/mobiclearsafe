@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
@@ -52,6 +53,12 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
 
     private TextView tvNum;
     private TextView tvUnit;
+    private Button btnClear;
+
+    /**
+     * 数据的长度
+     */
+    private long dataSize;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, GarbageActivity.class);
@@ -111,6 +118,7 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
     private void initOtherIds() {
         tvNum = findViewById(R.id.tvNum);
         tvUnit = findViewById(R.id.tvUnit);
+        btnClear = findViewById(R.id.btnClear);
     }
 
     private void initToolBar() {
@@ -161,6 +169,9 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
             }
         });
 
+        garbageAdapter.setCheckedListener((allSize, data) -> {
+            computeAllSize(allSize);
+        });
     }
 
     private List<MultiItemEntity> createGarbageHeaders() {
@@ -213,17 +224,18 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
                             bean.allSize = allSize;
                             bean.setSubItems(list);
 
-                        } else if (bean.headerType == 1) {
-                            List<GarbageBean> list2 = new ArrayList<>();
-                            list2.add(new GarbageBean());
-                            list2.add(new GarbageBean());
-                            list2.add(new GarbageBean());
-                            list2.add(new GarbageBean());
-                            list2.add(new GarbageBean());
-                            list2.add(new GarbageBean());
-                            list2.add(new GarbageBean());
-                            bean.setSubItems(list2);
                         }
+//                        else if (bean.headerType == 1) {
+//                            List<GarbageBean> list2 = new ArrayList<>();
+//                            list2.add(new GarbageBean());
+//                            list2.add(new GarbageBean());
+//                            list2.add(new GarbageBean());
+//                            list2.add(new GarbageBean());
+//                            list2.add(new GarbageBean());
+//                            list2.add(new GarbageBean());
+//                            list2.add(new GarbageBean());
+//                            bean.setSubItems(list2);
+//                        }
                     }
                 }
 
@@ -232,24 +244,41 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
             break;
 
             case H_INVALID_INSTALLATION_PACKAGE_DATA: {
-                GarbageBean bean = (GarbageBean) msg.obj;
-                GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
-                garbageHeaderBean.getSubItems().add(bean);
-                garbageAdapter.notifyDataSetChanged();
+                List<MultiItemEntity> data = garbageAdapter.getData();
+                for (MultiItemEntity datum : data) {
+                    if (datum instanceof GarbageHeaderBean) {
+                        GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) datum;
+                        if (garbageHeaderBean.headerType == 4) {
+                            GarbageBean bean = (GarbageBean) msg.obj;
+                            garbageHeaderBean.getSubItems().add(bean);
+                            garbageAdapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+
             }
             break;
             case H_INVALID_INSTALLATION_PACKAGE_DATA_FINISH: {
-                GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) garbageAdapter.getData().get(4);
-                long allSize = 0L;
-                for (GarbageBean subItem : garbageHeaderBean.getSubItems()) {
-                    //选中了才进行计算
-                    if (subItem.isCheck) {
-                        allSize += subItem.fileSize;
+                List<MultiItemEntity> data = garbageAdapter.getData();
+                for (MultiItemEntity datum : data) {
+                    if (datum instanceof GarbageHeaderBean) {
+                        GarbageHeaderBean garbageHeaderBean = (GarbageHeaderBean) datum;
+                        if (garbageHeaderBean.headerType == 4) {
+                            long allSize = 0L;
+                            for (GarbageBean subItem : garbageHeaderBean.getSubItems()) {
+                                //选中了才进行计算
+                                if (subItem.isCheck) {
+                                    allSize += subItem.fileSize;
+                                }
+                            }
+                            garbageHeaderBean.isLoading = false;
+                            garbageHeaderBean.allSize = allSize;
+                            garbageAdapter.notifyDataSetChanged();
+                            break;
+                        }
                     }
                 }
-                garbageHeaderBean.isLoading = false;
-                garbageHeaderBean.allSize = allSize;
-                garbageAdapter.notifyDataSetChanged();
             }
             break;
 
@@ -260,7 +289,12 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
                         allSize += ((GarbageHeaderBean) datum).allSize;
                     }
                 }
+                dataSize = allSize;
+                garbageAdapter.dataAllSize = dataSize;
                 computeAllSize(allSize);
+                //加载完成
+                garbageAdapter.isLoadFinish = true;
+                btnClear.setEnabled(true);
             }
             break;
         }
@@ -274,6 +308,7 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
         String[] fileSize0 = FileUtil.getFileSize0(allSize);
         tvNum.setText(fileSize0[0]);
         tvUnit.setText(fileSize0[1]);
+        btnClear.setText("放心清理（" + fileSize0[0] + fileSize0[1] + "）");
         Log.e(TAG, "allSizeAic : " + allSize);
     }
 
@@ -286,6 +321,14 @@ public class GarbageActivity extends AppCompatActivity implements Handler.Callba
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (!garbageAdapter.isLoadFinish) {
+            //TODO 就真正扫描是否退出 对话框
+        }
     }
 
     //要抽取

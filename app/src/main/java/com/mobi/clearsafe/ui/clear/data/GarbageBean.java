@@ -28,7 +28,7 @@ public class GarbageBean implements MultiItemEntity, Comparable<GarbageBean> {
 
     public long fileSize;
 
-    public boolean isCheck;
+    public boolean isCheck = true;
     public String[] sizeAndUnit;
     public List<File> fileList = new ArrayList<>();
 

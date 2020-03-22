@@ -84,6 +84,14 @@ public class ClearItemView extends FrameLayout {
         return cbMemory.isChecked();
     }
 
+    /**
+     * 让外面去获取设置点击事件
+     * @return
+     */
+    public CheckBox getCbMemory() {
+        return cbMemory;
+    }
+
     public List<File> getFile() {
         return mBean.fileList;
     }

@@ -53,6 +53,10 @@ public class ClearQQWrap {
      * @param civ
      */
     public void findQQClear(Handler handler, TextView tvNum, TextView tvUnit, ClearItemView... civ) {
+        if (tvNum != null) {
+            handlerClearItemViewChecked(civ);
+        }
+
         QQClearUtil.findFriendIconCache(new QQClearUtil.IAdCacheListener() {
             @Override
             public void onFindLoad(WechatBean bean) {
@@ -128,6 +132,25 @@ public class ClearQQWrap {
 
     }
 
+
+    private void handlerClearItemViewChecked(ClearItemView[] civ) {
+        for (ClearItemView clearItemView : civ) {
+            clearItemView.getCbMemory().setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    long size = clearItemView.getSize();
+                    allSize.set(allSize.get() + size);
+                } else {
+                    long size = clearItemView.getSize();
+                    allSize.set(allSize.get() - size);
+                }
+
+                if (onCheckedListener != null) {
+                    onCheckedListener.onCheckedChange(allSize.get());
+                }
+            });
+        }
+    }
+
     private void handleTextNum(TextView tvNum, TextView tvUnit, ClearItemView... civ) {
         long size = 0L;
         for (ClearItemView clearItemView : civ) {
@@ -162,4 +185,11 @@ public class ClearQQWrap {
     public interface IClearCallback {
         void onFinish();
     }
+
+    private OnCheckedListener onCheckedListener;
+
+    public void setOnCheckedListener(OnCheckedListener onCheckedListener) {
+        this.onCheckedListener = onCheckedListener;
+    }
+
 }

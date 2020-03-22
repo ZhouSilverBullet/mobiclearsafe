@@ -19,9 +19,13 @@ import com.mobi.clearsafe.base.BaseAppCompatActivity;
 import com.mobi.clearsafe.ui.clear.control.ClearQQWrap;
 import com.mobi.clearsafe.ui.clear.control.ScanAnimatorContainer;
 import com.mobi.clearsafe.ui.clear.data.Consts;
+import com.mobi.clearsafe.ui.clear.util.FileUtil;
 import com.mobi.clearsafe.ui.clear.util.WechatClearUtil;
 import com.mobi.clearsafe.ui.clear.widget.ClearItemView;
+import com.mobi.clearsafe.ui.clear.widget.wave.MultiWaveHeader;
 import com.mobi.clearsafe.utils.ToastUtils;
+
+import static com.mobi.clearsafe.main.fragment.HomeFragment.H_QQ_CACHE;
 
 public class CleanQReportActivity extends BaseAppCompatActivity implements Consts, Handler.Callback {
 
@@ -39,6 +43,9 @@ public class CleanQReportActivity extends BaseAppCompatActivity implements Const
 
     public static final String TAG = "CleanReportActivity";
     private ScanAnimatorContainer scanAnimatorContainer;
+
+    private View vLine;
+    private MultiWaveHeader waveHeader;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, CleanQReportActivity.class);
@@ -96,6 +103,13 @@ public class CleanQReportActivity extends BaseAppCompatActivity implements Const
             execClearForWrap();
 
         });
+
+        clearWechatWrap.setOnCheckedListener(size -> {
+            String[] fileSize0 = FileUtil.getFileSize0(size);
+            tvNum.setText(fileSize0[0]);
+            tvUnit.setText(fileSize0[1]);
+            btnClear.setText("放心清理（" + fileSize0[0] + fileSize0[1] + "）");
+        });
     }
 
     private void execClearForWrap() {
@@ -129,6 +143,8 @@ public class CleanQReportActivity extends BaseAppCompatActivity implements Const
                 R.mipmap.ic_launcher,
                 getString(R.string.clear_qq_dec)));
 
+        vLine = findViewById(R.id.vLine);
+        waveHeader = findViewById(R.id.waveHeader);
     }
 
     private void initToolBar() {
@@ -215,8 +231,42 @@ public class CleanQReportActivity extends BaseAppCompatActivity implements Const
                     scanAnimatorContainer.stop();
                 }
                 break;
+            case H_QQ_CACHE: {
+//                String[] fileSizeStr = (String[]) msg.obj;
+                int size = msg.arg1;
+//                handleFindData(fileSizeStr[0] + fileSizeStr[1], size);
+                handleBgStatus(size);
+            }
+
+            break;
         }
         return true;
+    }
+
+    private void handleBgStatus(int size) {
+
+        if (size < 30000000) {
+            vLine.setBackgroundResource(R.drawable.clear_blue_selector);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_0043ff));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_008dff));
+
+        } else if (size < 50000000) {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        } else if (size < 100000000) {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        } else {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        }
     }
 
     @Override

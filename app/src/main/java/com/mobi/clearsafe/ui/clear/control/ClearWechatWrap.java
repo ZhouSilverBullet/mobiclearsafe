@@ -3,6 +3,7 @@ package com.mobi.clearsafe.ui.clear.control;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.mobi.clearsafe.main.fragment.HomeFragment;
@@ -53,6 +54,10 @@ public class ClearWechatWrap {
      * @param civ
      */
     public void findWechatClear(Handler handler, TextView tvNum, TextView tvUnit, ClearItemView... civ) {
+        if (tvNum != null) {
+            handlerClearItemViewChecked(civ);
+        }
+
         WechatClearUtil.findWxAdCache(new WechatClearUtil.IAdCacheListener() {
             @Override
             public void onFindLoad(WechatBean bean) {
@@ -126,6 +131,24 @@ public class ClearWechatWrap {
 
     }
 
+    private void handlerClearItemViewChecked(ClearItemView[] civ) {
+        for (ClearItemView clearItemView : civ) {
+            clearItemView.getCbMemory().setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    long size = clearItemView.getSize();
+                    allSize.set(allSize.get() + size);
+                } else {
+                    long size = clearItemView.getSize();
+                    allSize.set(allSize.get() - size);
+                }
+
+                if (onCheckedListener != null) {
+                    onCheckedListener.onCheckedChange(allSize.get());
+                }
+            });
+        }
+    }
+
     private void handleTextNum(TextView tvNum, TextView tvUnit, ClearItemView... civ) {
         if (tvNum == null || tvUnit == null || civ == null) {
             return;
@@ -162,5 +185,11 @@ public class ClearWechatWrap {
 
     public interface IClearCallback {
         void onFinish();
+    }
+
+    private OnCheckedListener onCheckedListener;
+
+    public void setOnCheckedListener(OnCheckedListener onCheckedListener) {
+        this.onCheckedListener = onCheckedListener;
     }
 }

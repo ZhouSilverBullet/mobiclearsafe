@@ -20,10 +20,17 @@ import com.mobi.clearsafe.ui.clear.control.ClearWechatWrap;
 import com.mobi.clearsafe.ui.clear.control.ScanAnimatorContainer;
 import com.mobi.clearsafe.ui.clear.data.Consts;
 import com.mobi.clearsafe.ui.clear.util.FileManager;
+import com.mobi.clearsafe.ui.clear.util.FileUtil;
 import com.mobi.clearsafe.ui.clear.util.WechatClearUtil;
 import com.mobi.clearsafe.ui.clear.widget.ClearItemView;
+import com.mobi.clearsafe.ui.clear.widget.wave.MultiWaveHeader;
 import com.mobi.clearsafe.utils.StatusBarUtil;
 import com.mobi.clearsafe.utils.ToastUtils;
+
+import java.util.Random;
+
+import static com.mobi.clearsafe.main.fragment.HomeFragment.H_QQ_CACHE;
+import static com.mobi.clearsafe.main.fragment.HomeFragment.H_WX_CACHE;
 
 public class CleanReportActivity extends BaseAppCompatActivity implements Consts, Handler.Callback {
 
@@ -38,6 +45,9 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
     private Button btnClear;
     private ClearWechatWrap clearWechatWrap;
     private View vScan;
+
+    private View vLine;
+    private MultiWaveHeader waveHeader;
 
     public static final String TAG = "CleanReportActivity";
     private ScanAnimatorContainer scanAnimatorContainer;
@@ -98,6 +108,13 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
             execClearForWrap();
 
         });
+
+        clearWechatWrap.setOnCheckedListener(size -> {
+            String[] fileSize0 = FileUtil.getFileSize0(size);
+            tvNum.setText(fileSize0[0]);
+            tvUnit.setText(fileSize0[1]);
+            btnClear.setText("放心清理（" + fileSize0[0] + fileSize0[1] + "）");
+        });
     }
 
     private void execClearForWrap() {
@@ -131,6 +148,10 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
                 R.mipmap.ic_launcher,
                 getString(R.string.clear_wechat_dec)));
 
+
+        vLine = findViewById(R.id.vLine);
+        waveHeader = findViewById(R.id.waveHeader);
+
     }
 
     private void initToolBar() {
@@ -146,8 +167,8 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
             @Override
             public void onClick(View v) {
 //                ToastUtils.showShortSafe("aaaaaa");
-                StatusBarUtil.setStatusBarMode(CleanReportActivity.this, true, R.color.white);
-                FileManager.scaFile(handler);
+//                StatusBarUtil.setStatusBarMode(CleanReportActivity.this, true, R.color.white);
+//                FileManager.scaFile(handler);
             }
         });
 
@@ -217,8 +238,44 @@ public class CleanReportActivity extends BaseAppCompatActivity implements Consts
                     scanAnimatorContainer.stop();
                 }
                 break;
+            case H_WX_CACHE: {
+//                String[] fileSizeStr = (String[]) msg.obj;
+                int size = msg.arg1;
+//                handleFindData(fileSizeStr[0] + fileSizeStr[1], size);
+                handleBgStatus(size);
+            }
+
+            break;
+
         }
         return true;
+    }
+
+
+    private void handleBgStatus(int size) {
+
+        if (size < 30000000) {
+            vLine.setBackgroundResource(R.drawable.clear_blue_selector);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_0043ff));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_008dff));
+
+        } else if (size < 50000000) {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        } else if (size < 100000000) {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        } else {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        }
     }
 
     @Override

@@ -31,19 +31,54 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<ClearBean, BaseViewHo
             case 1:
                 ImageView ivIcon = helper.getView(R.id.ivIcon);
                 TextView tvName = helper.getView(R.id.tvName);
+                TextView tvDec = helper.getView(R.id.tvDec);
                 tvName.setText(item.clearName);
 
-                if (helper.getAdapterPosition() == 3) {
-                    helper.itemView.setOnClickListener(v -> {
-                        CleanQReportActivity.start(v.getContext());
-                    });
-                } else {
-                    helper.itemView.setOnClickListener(v -> {
-                        CleanReportActivity.start(v.getContext());
-                    });
-                }
+                tvDec.setTextColor(mContext.getResources().getColor(item.color));
+                tvDec.setText(item.dec);
+
+                //点击事件处理
+                helper.itemView.setOnClickListener(v -> {
+                    skipHandler(v, item);
+                });
+//
+//                if (helper.getAdapterPosition() == 3) {
+//                    helper.itemView.setOnClickListener(v -> {
+//                        CleanQReportActivity.start(v.getContext());
+//                    });
+//                } else {
+//                    helper.itemView.setOnClickListener(v -> {
+//                        CleanReportActivity.start(v.getContext());
+//                    });
+//                }
 
                 break;
+        }
+    }
+
+    private void skipHandler(View v, ClearBean item) {
+        switch (item.clearType) {
+            //微信
+            case 2: {
+                CleanReportActivity.start(v.getContext());
+            }
+            break;
+            //手Q
+            case 3: {
+                CleanQReportActivity.start(v.getContext());
+            }
+            break;
+            //手机降温
+            case 4: {
+
+            }
+            break;
+            //手机加速
+            default: {
+
+            }
+
+            break;
         }
     }
 

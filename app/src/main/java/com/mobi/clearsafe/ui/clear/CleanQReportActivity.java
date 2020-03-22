@@ -17,13 +17,10 @@ import android.widget.TextView;
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.base.BaseAppCompatActivity;
 import com.mobi.clearsafe.ui.clear.control.ClearQQWrap;
-import com.mobi.clearsafe.ui.clear.control.ClearWechatWrap;
 import com.mobi.clearsafe.ui.clear.control.ScanAnimatorContainer;
 import com.mobi.clearsafe.ui.clear.data.Consts;
-import com.mobi.clearsafe.ui.clear.util.FileManager;
 import com.mobi.clearsafe.ui.clear.util.WechatClearUtil;
 import com.mobi.clearsafe.ui.clear.widget.ClearItemView;
-import com.mobi.clearsafe.utils.StatusBarUtil;
 import com.mobi.clearsafe.utils.ToastUtils;
 
 public class CleanQReportActivity extends BaseAppCompatActivity implements Consts, Handler.Callback {
@@ -90,7 +87,7 @@ public class CleanQReportActivity extends BaseAppCompatActivity implements Const
     }
 
     private void findWechatClear() {
-        clearWechatWrap.findWechatClear(handler, tvNum, tvUnit, civAd, civFriend, civWechatGarbage);
+        clearWechatWrap.findQQClear(handler, tvNum, tvUnit, civAd, civFriend, civWechatGarbage);
     }
 
     private void initEvent() {
@@ -104,7 +101,7 @@ public class CleanQReportActivity extends BaseAppCompatActivity implements Const
     private void execClearForWrap() {
         clearWechatWrap.btnClear(() -> {
             if (clearWechatWrap != null) {
-                clearWechatWrap.findWechatClear(handler, tvNum, tvUnit, civAd, civFriend, civWechatGarbage);
+                clearWechatWrap.findQQClear(handler, tvNum, tvUnit, civAd, civFriend, civWechatGarbage);
             }
         }, civAd, civFriend, civWechatGarbage);
     }

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.main.adapter.HomeAdapter;
@@ -14,10 +15,12 @@ import com.mobi.clearsafe.ui.clear.GarbageActivity;
 import com.mobi.clearsafe.ui.clear.control.ClearQQWrap;
 import com.mobi.clearsafe.ui.clear.control.ClearWechatWrap;
 import com.mobi.clearsafe.ui.clear.util.ItemDivider;
+import com.mobi.clearsafe.ui.clear.widget.wave.MultiWaveHeader;
 import com.mobi.clearsafe.widget.LazyLoadFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class HomeFragment extends LazyLoadFragment implements Handler.Callback {
 
@@ -28,6 +31,10 @@ public class HomeFragment extends LazyLoadFragment implements Handler.Callback {
     private HomeAdapter homeAdapter;
     private Button btnSkipClear;
     private Handler handler;
+    private View vLine;
+    private TextView tvPoint;
+    private TextView tvStatus;
+    private MultiWaveHeader waveHeader;
 
 
     public HomeFragment() {
@@ -54,6 +61,11 @@ public class HomeFragment extends LazyLoadFragment implements Handler.Callback {
         }
 
 //        ivIcon = findViewById(R.id.ivIcon);
+        vLine = findViewById(R.id.vLine);
+        tvPoint = findViewById(R.id.tvPoint);
+        tvStatus = findViewById(R.id.tvStatus);
+        waveHeader = findViewById(R.id.waveHeader);
+
         rv = findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.addItemDecoration(new ItemDivider().setLastLineNotDraw(true));
@@ -79,7 +91,8 @@ public class HomeFragment extends LazyLoadFragment implements Handler.Callback {
 
         ClearQQWrap clearQQWrap = new ClearQQWrap();
         clearQQWrap.findQQClear(handler, null, null);
-        
+
+//        StatusBarUtil.setStatusBarColor(getActivity(), R.color.c_008dff);
     }
 
     private List<ClearBean> getRvGridData() {
@@ -118,8 +131,43 @@ public class HomeFragment extends LazyLoadFragment implements Handler.Callback {
     }
 
     private void handleBgStatus(int size) {
-        if (size > 50000000) {
+        int randomValue = new Random().nextInt(10);
+        if (size < 30000000) {
+            vLine.setBackgroundResource(R.drawable.clear_blue_selector);
+            int point = 80 + randomValue;
+            tvPoint.setText(String.valueOf(point));
+            btnSkipClear.setTextColor(getResources().getColor(R.color.c_2B86FF));
+            tvStatus.setText("亚健康");
+            waveHeader.setStartColor(getResources().getColor(R.color.c_0043ff));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_008dff));
 
+        } else if (size < 50000000) {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+            int point = 60 + randomValue;
+            tvPoint.setText(String.valueOf(point));
+            btnSkipClear.setTextColor(getResources().getColor(R.color.c_FF6A00));
+            tvStatus.setText("不健康");
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        } else if (size < 100000000) {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+            int point = 40 + randomValue;
+            tvPoint.setText(String.valueOf(point));
+            btnSkipClear.setTextColor(getResources().getColor(R.color.c_FF6A00));
+            tvStatus.setText("超负荷");
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
+        } else {
+            vLine.setBackgroundResource(R.drawable.clear_orange_shape);
+            int point = 20 + randomValue;
+            tvPoint.setText(String.valueOf(point));
+            btnSkipClear.setTextColor(getResources().getColor(R.color.c_FF6A00));
+            tvStatus.setText("超负荷");
+
+            waveHeader.setStartColor(getResources().getColor(R.color.c_FFE700));
+            waveHeader.setCloseColor(getResources().getColor(R.color.c_CA7A03));
         }
     }
 

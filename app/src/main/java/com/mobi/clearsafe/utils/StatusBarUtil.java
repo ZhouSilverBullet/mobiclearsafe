@@ -60,7 +60,11 @@ public class StatusBarUtil {
         //Android6.0（API 23）以上，系统方法
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
-            window.setStatusBarColor(activity.getResources().getColor(colorId));
+            if (isDrawableResource) {
+                window.setStatusBarColor(calculateStatusColor(colorId, 90));
+            } else  {
+                window.setStatusBarColor(activity.getResources().getColor(colorId));
+            }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
             setTranslucentStatus(activity);
@@ -68,11 +72,32 @@ public class StatusBarUtil {
             SystemBarTintManager tintManager = new SystemBarTintManager(activity);
             tintManager.setStatusBarTintEnabled(true);
             if (isDrawableResource) {
-                tintManager.setStatusBarTintResource(colorId);
+                tintManager.setStatusBarTintDrawable(activity.getResources().getDrawable(colorId));
             } else  {
                 tintManager.setStatusBarTintResource(colorId);
             }
         }
+    }
+
+    /**
+     * 计算状态栏颜色
+     *
+     * @param color color值
+     * @param alpha alpha值
+     * @return 最终的状态栏颜色
+     */
+    private static int calculateStatusColor(int color, int alpha) {
+        if (alpha == 0) {
+            return color;
+        }
+        float a = 1 - alpha / 255f;
+        int red = color >> 16 & 0xff;
+        int green = color >> 8 & 0xff;
+        int blue = color & 0xff;
+        red = (int) (red * a + 0.5);
+        green = (int) (green * a + 0.5);
+        blue = (int) (blue * a + 0.5);
+        return 0xff << 24 | red << 16 | green << 8 | blue;
     }
 
     /**

@@ -5,22 +5,28 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.base.BaseAppCompatActivity;
+import com.mobi.clearsafe.ui.clear.widget.GoodChangeLayout;
+import com.mobi.clearsafe.ui.clear.widget.PowerCoolLayout;
 
 /**
  * 降温
  */
 public class PowerCoolActivity extends BaseAppCompatActivity {
     public static final String TAG = "PowerCoolActivity";
+    private PowerCoolLayout pclLayout;
+    private GoodChangeLayout gclLayout;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, PowerCoolActivity.class);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +39,18 @@ public class PowerCoolActivity extends BaseAppCompatActivity {
         }
         setContentView(R.layout.activity_power_cool);
 
+        initOtherIds();
+    }
+
+    private void initOtherIds() {
+        gclLayout = findViewById(R.id.gclLayout);
+        pclLayout = findViewById(R.id.pclLayout);
+        pclLayout.setCoolChangeListener(percent -> {
+            if (percent == 1) {
+                pclLayout.setVisibility(View.GONE);
+                gclLayout.startAnim();
+            }
+        });
     }
 
 }

@@ -169,6 +169,10 @@ public class PowerCoolLayout extends View {
         if (percent > 0.6f) {
             gradientPaint.setShader(greenShader);
         }
+
+        if (coolChangeListener != null) {
+            coolChangeListener.onChangePercent(percent);
+        }
     }
 
     @Override
@@ -224,5 +228,15 @@ public class PowerCoolLayout extends View {
 
     private double getLastDoubleValue(double value) {
         return ((int) (value * 10)) / 10.0;
+    }
+
+    private PowerCoolChangeListener coolChangeListener;
+
+    public void setCoolChangeListener(PowerCoolChangeListener coolChangeListener) {
+        this.coolChangeListener = coolChangeListener;
+    }
+
+    public interface PowerCoolChangeListener {
+        void onChangePercent(float percent);
     }
 }

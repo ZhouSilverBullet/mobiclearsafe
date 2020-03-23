@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.huawei.android.hms.agent.common.UIUtils;
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.utils.UiUtils;
 

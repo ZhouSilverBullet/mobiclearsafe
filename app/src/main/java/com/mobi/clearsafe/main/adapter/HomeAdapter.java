@@ -1,21 +1,20 @@
 package com.mobi.clearsafe.main.adapter;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.main.adapter.data.ClearBean;
 import com.mobi.clearsafe.ui.clear.CleanQReportActivity;
 import com.mobi.clearsafe.ui.clear.CleanReportActivity;
+import com.mobi.clearsafe.ui.clear.PowerCoolActivity;
+import com.mobi.clearsafe.ui.clear.SpeedPhoneActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeAdapter extends BaseMultiItemQuickAdapter<ClearBean, BaseViewHolder> {
 
@@ -70,12 +69,12 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<ClearBean, BaseViewHo
             break;
             //手机降温
             case 4: {
-
+                PowerCoolActivity.start(v.getContext());
             }
             break;
             //手机加速
             default: {
-
+                SpeedPhoneActivity.start(v.getContext());
             }
 
             break;

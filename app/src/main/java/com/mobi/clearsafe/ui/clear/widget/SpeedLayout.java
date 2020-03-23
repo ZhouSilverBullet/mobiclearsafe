@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.mobi.clearsafe.R;
@@ -57,7 +58,7 @@ public class SpeedLayout extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (valueAnimator == null) {
-            initValueAnim(getHeight() + bitmap.getHeight(), bitmap.getHeight());
+            initValueAnim(getHeight(), bitmap.getHeight());
 
             rect = new Rect(0, 0, getWidth(), getHeight());
             greenShader = new LinearGradient(0, 0, getWidth(), getHeight(), new int[]{getResources().getColor(R.color.c_0043ff), getResources().getColor(R.color.c_008dff)}, null, Shader.TileMode.REPEAT);
@@ -79,7 +80,7 @@ public class SpeedLayout extends View {
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofFloat(value, -bitmapHeight);
             valueAnimator.setDuration(5000);
-            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.setInterpolator(new AccelerateInterpolator());
             valueAnimator.addUpdateListener(animation -> {
                 float animatedValue = (float) animation.getAnimatedValue();
                 mDrawHeight = animatedValue;

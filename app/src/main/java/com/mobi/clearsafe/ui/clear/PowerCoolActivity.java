@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.mobi.clearsafe.R;
+import com.mobi.clearsafe.app.MyApplication;
 import com.mobi.clearsafe.base.BaseAppCompatActivity;
 import com.mobi.clearsafe.ui.clear.widget.GoodChangeLayout;
 import com.mobi.clearsafe.ui.clear.widget.PowerCoolLayout;
@@ -47,12 +48,18 @@ public class PowerCoolActivity extends BaseAppCompatActivity {
     private void initOtherIds() {
         gclLayout = findViewById(R.id.gclLayout);
         pclLayout = findViewById(R.id.pclLayout);
-        pclLayout.setCoolChangeListener(percent -> {
-            if (percent == 1) {
-                pclLayout.setVisibility(View.GONE);
-                gclLayout.startAnim();
-            }
-        });
+
+        if (MyApplication.PHONE_CELSIUS < 25) {
+            pclLayout.setVisibility(View.GONE);
+            gclLayout.startAnim();
+        } else  {
+            pclLayout.setCoolChangeListener(percent -> {
+                if (percent == 1) {
+                    pclLayout.setVisibility(View.GONE);
+                    gclLayout.startAnim();
+                }
+            });
+        }
     }
 
     private void initToolBar() {

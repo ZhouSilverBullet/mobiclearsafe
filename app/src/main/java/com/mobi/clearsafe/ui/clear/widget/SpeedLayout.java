@@ -70,7 +70,7 @@ public class SpeedLayout extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-//        canvas.drawColor(getResources().getColor(R.color.white));
+        //暂时不draw背景，就是沉浸式失效了 后面考虑
         canvas.drawRect(rect, gradientPaint);
         canvas.drawBitmap(bitmap, (getWidth() - bitmap.getWidth()) / 2.0f, mDrawHeight, paint);
 
@@ -85,11 +85,16 @@ public class SpeedLayout extends View {
                 float animatedValue = (float) animation.getAnimatedValue();
                 mDrawHeight = animatedValue;
                 if (mDrawHeight == 0) {
-                    ToastUtils.showShort("执行完毕");
+//                    ToastUtils.showShort("执行完毕");
                     Log.e("SpeedLayout", " mDrawHeight " + mDrawHeight);
                 }
                 if (mDrawHeight <= value / 3) {
                     gradientPaint.setShader(greenShader);
+                }
+
+                if (speedChangeListener != null) {
+                    float percent = animatedValue / value;
+                    speedChangeListener.onChangePercent(percent);
                 }
                 invalidate();
             });
@@ -126,5 +131,15 @@ public class SpeedLayout extends View {
             valueAnimator.removeAllUpdateListeners();
             valueAnimator.cancel();
         }
+    }
+
+    private SpeedChangeListener speedChangeListener;
+
+    public void setSpeedChangeListener(SpeedChangeListener speedChangeListener) {
+        this.speedChangeListener = speedChangeListener;
+    }
+
+    public interface SpeedChangeListener {
+        void onChangePercent(float percent);
     }
 }

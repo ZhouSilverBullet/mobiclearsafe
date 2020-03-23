@@ -2,8 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/clear_blue_selector"
     tools:context=".ui.clear.SpeedPhoneActivity">
 
     <android.support.v4.widget.NestedScrollView
@@ -16,12 +18,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.mobi.clearsafe.ui.clear.widget.GoodChangeLayout
+                android:id="@+id/gclLayout"
+                android:layout_width="match_parent"
+                android:layout_height="1080dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="200dp"
                 android:background="@drawable/white_cron18_selector"
                 android:padding="18dp" />
 
@@ -30,6 +35,8 @@
     </android.support.v4.widget.NestedScrollView>
 
     <com.mobi.clearsafe.ui.clear.widget.SpeedLayout
+        android:id="@+id/slLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </android.support.constraint.ConstraintLayout>

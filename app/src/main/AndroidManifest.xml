@@ -47,7 +47,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup,android:appComponentFactory,networkSecurityConfig">
-        <activity android:name=".ui.clear.SpeedPhoneActivity"></activity>
+        <activity
+            android:name=".ui.clear.SpeedPhoneActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SafeTheme">
+
+        </activity>
         <activity
             android:name=".ui.clear.GarbageActivity"
             android:screenOrientation="portrait"

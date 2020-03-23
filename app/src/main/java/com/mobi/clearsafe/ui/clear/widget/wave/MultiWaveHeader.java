@@ -149,13 +149,13 @@ public class MultiWaveHeader extends ViewGroup {
                         offsetX %= (float) wave.width / 2;
                     } else {
                         while (offsetX < 0) {
-                            offsetX += ((float) wave.width / 2);
+                            offsetX += ((float)wave.width / 2);
                         }
                     }
                     wave.offsetX = offsetX;
                     mMatrix.setTranslate(offsetX, (1 - mCurProgress) * height);//wave.offsetX =
                     canvas.translate(-offsetX, -wave.offsetY - (1 - mCurProgress) * height);
-                } else {
+                } else{
                     mMatrix.setTranslate(wave.offsetX, (1 - mCurProgress) * height);
                     canvas.translate(-wave.offsetX, -wave.offsetY - (1 - mCurProgress) * height);
                 }
@@ -176,15 +176,15 @@ public class MultiWaveHeader extends ViewGroup {
     }
 
     private void updateLinearGradient(int width, int height) {
-        int startColor = ColorUtils.setAlphaComponent(mStartColor, (int) (mColorAlpha * 255));
-        int closeColor = ColorUtils.setAlphaComponent(mCloseColor, (int) (mColorAlpha * 255));
+        int startColor = ColorUtils.setAlphaComponent(mStartColor, (int)(mColorAlpha*255));
+        int closeColor = ColorUtils.setAlphaComponent(mCloseColor, (int)(mColorAlpha*255));
         //noinspection UnnecessaryLocalVariable
         double w = width;
         double h = height * mCurProgress;
         double r = Math.sqrt(w * w + h * h) / 2;
         double y = r * Math.sin(2 * Math.PI * mGradientAngle / 360);
         double x = r * Math.cos(2 * Math.PI * mGradientAngle / 360);
-        mPaint.setShader(new LinearGradient((int) (w / 2 - x), (int) (h / 2 - y), (int) (w / 2 + x), (int) (h / 2 + y), startColor, closeColor, Shader.TileMode.CLAMP));
+        mPaint.setShader(new LinearGradient((int)(w/2-x), (int)(h/2-y), (int)(w/2+x), (int)(h/2+y), startColor, closeColor, Shader.TileMode.CLAMP));
     }
 
 
@@ -217,9 +217,9 @@ public class MultiWaveHeader extends ViewGroup {
                 waves = "0,0,1,0.5,90\n90,0,1,0.5,90".split("\\s+");
             }
             for (String wave : waves) {
-                String[] args = wave.split("\\s*,\\s*");
+                String[] args = wave.split ("\\s*,\\s*");
                 if (args.length == 5) {
-                    mltWave.add(new Wave(Util.dp2px(parseFloat(args[0])), Util.dp2px(parseFloat(args[1])), Util.dp2px(parseFloat(args[4])), parseFloat(args[2]), parseFloat(args[3]), mWaveHeight / 2));
+                    mltWave.add(new Wave(Util.dp2px(parseFloat(args[0])), Util.dp2px(parseFloat(args[1])), Util.dp2px(parseFloat(args[4])), parseFloat(args[2]), parseFloat(args[3]), mWaveHeight/2));
                 }
             }
         } else {
@@ -236,10 +236,9 @@ public class MultiWaveHeader extends ViewGroup {
 
     /**
      * 执行回弹动画
-     *
-     * @param progress     目标值
+     * @param progress 目标值
      * @param interpolator 加速器
-     * @param duration     时长
+     * @param duration 时长
      */
     protected void animProgress(float progress, Interpolator interpolator, int duration) {
         if (mCurProgress != progress) {
@@ -258,7 +257,7 @@ public class MultiWaveHeader extends ViewGroup {
             reboundAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    updateProgress((float) animation.getAnimatedValue());
+                    updateProgress((float)animation.getAnimatedValue());
                 }
             });
             reboundAnimator.start();

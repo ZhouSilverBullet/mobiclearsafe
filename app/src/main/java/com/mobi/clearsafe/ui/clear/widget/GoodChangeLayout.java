@@ -43,7 +43,7 @@ public class GoodChangeLayout extends LinearLayout {
         currentHeight = UiUtils.dp2px(getContext(), 1080);
 
         valueAnimator = ValueAnimator.ofInt(currentHeight, UiUtils.dp2px(getContext(), 220));
-        valueAnimator.setDuration(2000);
+        valueAnimator.setDuration(1000);
         valueAnimator.addUpdateListener(animation -> {
             int animatedValue = (int) animation.getAnimatedValue();
 //            layout(0, 0, getWidth(), animatedValue);

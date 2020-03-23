@@ -79,7 +79,7 @@ public class SpeedLayout extends View {
     private void initValueAnim(int value, int bitmapHeight) {
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofFloat(value, -bitmapHeight);
-            valueAnimator.setDuration(5000);
+            valueAnimator.setDuration(3000);
             valueAnimator.setInterpolator(new AccelerateInterpolator());
             valueAnimator.addUpdateListener(animation -> {
                 float animatedValue = (float) animation.getAnimatedValue();

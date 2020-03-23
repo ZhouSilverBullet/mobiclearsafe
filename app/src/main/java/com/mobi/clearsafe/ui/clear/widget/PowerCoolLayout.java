@@ -73,8 +73,8 @@ public class PowerCoolLayout extends View {
 
         gradientPaint = new Paint();
 
-        bitmap = getBitmap(R.mipmap.exit_icon, false);
-        dp250 = UiUtils.dp2px(getContext(), 250);
+        bitmap = getBitmap(R.drawable.ic_report_mobile_cool, false);
+        dp250 = UiUtils.dp2px(getContext(), 150);
         dp100 = UiUtils.dp2px(getContext(), 100);
 
         snowPath = new Path();

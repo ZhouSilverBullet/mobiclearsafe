@@ -75,9 +75,9 @@ public class SpeedLayout extends View {
 
     }
 
-    private void initValueAnim(float value, int bitmapHeight) {
+    private void initValueAnim(int value, int bitmapHeight) {
         if (valueAnimator == null) {
-            valueAnimator = ValueAnimator.ofFloat(value, 0);
+            valueAnimator = ValueAnimator.ofFloat(value, -bitmapHeight);
             valueAnimator.setDuration(5000);
             valueAnimator.setInterpolator(new DecelerateInterpolator());
             valueAnimator.addUpdateListener(animation -> {
@@ -85,16 +85,19 @@ public class SpeedLayout extends View {
                 mDrawHeight = animatedValue;
                 if (mDrawHeight == 0) {
 //                    ToastUtils.showShort("执行完毕");
-                    Log.e("SpeedLayout", " mDrawHeight " + mDrawHeight);
                 }
-                if (mDrawHeight <= value / 3) {
+                if (mDrawHeight <= value / 3f) {
                     gradientPaint.setShader(greenShader);
                 }
 
+                float percent = (animatedValue + bitmapHeight) / (value + bitmapHeight);
                 if (speedChangeListener != null) {
-                    float percent = animatedValue / value;
+//                    if (percent < 0) {
+//                        percent = 0f;
+//                    }
                     speedChangeListener.onChangePercent(percent);
                 }
+                Log.e("SpeedLayout", " mDrawHeight " + mDrawHeight + " p: " + percent);
                 invalidate();
             });
             valueAnimator.start();
@@ -102,7 +105,7 @@ public class SpeedLayout extends View {
     }
 
     private Bitmap getBitmap() {
-        Drawable drawable = getResources().getDrawable(R.mipmap.exit_icon);
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_report_rocket);
         return drawableToBitmap(drawable);
     }
 

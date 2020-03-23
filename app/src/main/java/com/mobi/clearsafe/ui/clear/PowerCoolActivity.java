@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +22,7 @@ public class PowerCoolActivity extends BaseAppCompatActivity {
     public static final String TAG = "PowerCoolActivity";
     private PowerCoolLayout pclLayout;
     private GoodChangeLayout gclLayout;
+    private Toolbar mToolBar;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, PowerCoolActivity.class);
@@ -38,7 +40,7 @@ public class PowerCoolActivity extends BaseAppCompatActivity {
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         setContentView(R.layout.activity_power_cool);
-
+        initToolBar();
         initOtherIds();
     }
 
@@ -51,6 +53,23 @@ public class PowerCoolActivity extends BaseAppCompatActivity {
                 gclLayout.startAnim();
             }
         });
+    }
+
+    private void initToolBar() {
+        mToolBar = findViewById(R.id.toolBar);
+        mToolBar.setTitle("");
+        mToolBar.setTitleTextColor(getResources().getColor(R.color.white));
+        mToolBar.setNavigationIcon(R.drawable.white_return);
+
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 
 }

@@ -3,15 +3,13 @@ package com.mobi.clearsafe.ui.clear.widget;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mobi.clearsafe.R;
 import com.mobi.clearsafe.utils.UiUtils;
@@ -26,9 +24,7 @@ public class GoodChangeLayout extends LinearLayout {
 
     private ValueAnimator valueAnimator;
     private int currentHeight;
-    private LinearGradient greenShader;
-    private Paint gradientPaint;
-    private Rect rect;
+    private TextView tvDec;
 
     public GoodChangeLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -40,6 +36,8 @@ public class GoodChangeLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
         setOrientation(VERTICAL);
         View.inflate(getContext(), R.layout.view_good_change_layout, this);
+
+        tvDec = findViewById(R.id.tvDec);
 
 //        currentHeight = (getResources().getDisplayMetrics().heightPixels * 2) / 3;
         currentHeight = UiUtils.dp2px(getContext(), 1080);
@@ -78,6 +76,10 @@ public class GoodChangeLayout extends LinearLayout {
 //        }
     }
 
+    public void setTvDec(String value) {
+        tvDec.setText(value);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
 //        canvas.drawRect(rect, gradientPaint);
@@ -86,6 +88,9 @@ public class GoodChangeLayout extends LinearLayout {
     }
 
     public void startAnim() {
+        if (valueAnimator.isRunning()) {
+            return;
+        }
         if (valueAnimator != null) {
             valueAnimator.start();
         }

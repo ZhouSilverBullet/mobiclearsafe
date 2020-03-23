@@ -4,8 +4,12 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -29,6 +33,10 @@ public class SpeedLayout extends View {
     //用来执行动画的
     private float mDrawHeight = -1;
     private Bitmap bitmap;
+    private Paint gradientPaint;
+    private Shader redShader;
+    private Shader greenShader;
+    private Rect rect;
 
     public SpeedLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -39,6 +47,10 @@ public class SpeedLayout extends View {
     private void init() {
         paint = new Paint();
         bitmap = getBitmap();
+
+        //定义一个Paint
+        gradientPaint = new Paint();
+
     }
 
     @Override
@@ -46,6 +58,11 @@ public class SpeedLayout extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         if (valueAnimator == null) {
             initValueAnim(getHeight() + bitmap.getHeight(), bitmap.getHeight());
+
+            rect = new Rect(0, 0, getWidth(), getHeight());
+            greenShader = new LinearGradient(0, 0, getWidth(), getHeight(), new int[]{getResources().getColor(R.color.c_0043ff), getResources().getColor(R.color.c_008dff)}, null, Shader.TileMode.REPEAT);
+            redShader = new LinearGradient(0, 0, getWidth(), getHeight(), new int[]{getResources().getColor(R.color.c_FF6A00), getResources().getColor(R.color.c_F49F1F)}, null, Shader.TileMode.REPEAT);
+            gradientPaint.setShader(redShader);
         }
     }
 
@@ -53,27 +70,26 @@ public class SpeedLayout extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawColor(getResources().getColor(R.color.white));
+//        canvas.drawColor(getResources().getColor(R.color.white));
+        canvas.drawRect(rect, gradientPaint);
         canvas.drawBitmap(bitmap, (getWidth() - bitmap.getWidth()) / 2.0f, mDrawHeight, paint);
-
 
     }
 
     private void initValueAnim(float value, int bitmapHeight) {
         if (valueAnimator == null) {
-//            valueAnimator = ValueAnimator.ofFloat(value, -bitmapHeight);
             valueAnimator = ValueAnimator.ofFloat(value, 0);
             valueAnimator.setDuration(5000);
             valueAnimator.setInterpolator(new DecelerateInterpolator());
-            valueAnimator.setRepeatMode(ValueAnimator.REVERSE);
-            valueAnimator.setRepeatCount(1000);
-//            valueAnimator.reverse();
             valueAnimator.addUpdateListener(animation -> {
                 float animatedValue = (float) animation.getAnimatedValue();
                 mDrawHeight = animatedValue;
                 if (mDrawHeight == 0) {
                     ToastUtils.showShort("执行完毕");
                     Log.e("SpeedLayout", " mDrawHeight " + mDrawHeight);
+                }
+                if (mDrawHeight <= value / 3) {
+                    gradientPaint.setShader(greenShader);
                 }
                 invalidate();
             });
@@ -102,14 +118,13 @@ public class SpeedLayout extends View {
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        Log.e("PowerCoolActivity", "onAttachedToWindow");
-    }
-
-    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         Log.e("PowerCoolActivity", "onDetachedFromWindow");
+        //取消动画
+        if (valueAnimator != null) {
+            valueAnimator.removeAllUpdateListeners();
+            valueAnimator.cancel();
+        }
     }
 }

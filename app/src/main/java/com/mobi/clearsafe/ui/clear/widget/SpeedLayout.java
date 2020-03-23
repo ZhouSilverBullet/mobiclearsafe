@@ -70,7 +70,6 @@ public class SpeedLayout extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //暂时不draw背景，就是沉浸式失效了 后面考虑
         canvas.drawRect(rect, gradientPaint);
         canvas.drawBitmap(bitmap, (getWidth() - bitmap.getWidth()) / 2.0f, mDrawHeight, paint);
 

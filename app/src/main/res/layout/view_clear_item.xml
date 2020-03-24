@@ -59,6 +59,8 @@
             android:layout_centerVertical="true"
             android:text="111MB"
             android:checked="true"
+            android:button="@null"
+            android:drawableRight="@drawable/clear_cb_selector"
             android:textColor="@color/red_ff5b2e"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

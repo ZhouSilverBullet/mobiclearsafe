@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="15dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="15dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -56,8 +56,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="111MB"
+            android:button="@null"
             android:checked="true"
+            android:drawableRight="@drawable/clear_cb_selector"
+            android:text="111MB"
             android:textColor="@color/red_ff5b2e"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

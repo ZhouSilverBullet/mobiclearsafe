@@ -71,6 +71,7 @@ public class ClearItemView extends FrameLayout {
         cbMemory.setVisibility(VISIBLE);
         if (mBean.fileSize <= 0) {
             cbMemory.setButtonDrawable(null);
+            cbMemory.setCompoundDrawables(null, null, null, null);
             cbMemory.setText("无需清理");
             cbMemory.setChecked(false);
             mBean.isCheck = false;
@@ -86,6 +87,7 @@ public class ClearItemView extends FrameLayout {
 
     /**
      * 让外面去获取设置点击事件
+     *
      * @return
      */
     public CheckBox getCbMemory() {

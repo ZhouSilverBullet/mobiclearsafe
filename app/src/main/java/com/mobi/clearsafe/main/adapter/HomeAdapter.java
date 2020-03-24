@@ -31,6 +31,7 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<ClearBean, BaseViewHo
                 ImageView ivIcon = helper.getView(R.id.ivIcon);
                 TextView tvName = helper.getView(R.id.tvName);
                 TextView tvDec = helper.getView(R.id.tvDec);
+                TextView tvReward = helper.getView(R.id.tvReward);
                 tvName.setText(item.clearName);
 
                 tvDec.setTextColor(mContext.getResources().getColor(item.color));
@@ -40,6 +41,7 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<ClearBean, BaseViewHo
                 helper.itemView.setOnClickListener(v -> {
                     skipHandler(v, item);
                 });
+                tvReward.setText("+" + item.points);
 //
 //                if (helper.getAdapterPosition() == 3) {
 //                    helper.itemView.setOnClickListener(v -> {

@@ -58,6 +58,7 @@ import com.mobi.clearsafe.moneyactivity.bean.ShareContentBean;
 import com.mobi.clearsafe.moneyactivity.bean.SiginRemind;
 import com.mobi.clearsafe.moneyactivity.bean.SigninDouble;
 import com.mobi.clearsafe.moneyactivity.bean.TaskEntity;
+import com.mobi.clearsafe.ui.clear.entity.CleanListBean;
 import com.mobi.clearsafe.wxapi.bean.AccessTokenBean;
 import com.mobi.clearsafe.wxapi.bean.LoginBean;
 import com.mobi.clearsafe.wxapi.bean.UserInfo;
@@ -365,7 +366,7 @@ public interface HttpApi {
      *
      * @return
      */
-    @GET("rcv/v1/server-projects/config")
+    @GET("all-walking/v1/config")
     Observable<BaseResponse<ConfigEntity>> getConfig();
 
 
@@ -828,6 +829,10 @@ public interface HttpApi {
      */
     @GET("all-walking/v2/invite/record")
     Observable<BaseResponse<InviteRecord>> inviteRecord(@Query("user_id") String user_id, @Query("page") int page, @Query("limit") int limit);
+
+
+    @GET("all-walking/v1/clean/list")
+    Observable<BaseResponse<CleanListBean>> getCleanList();
 
 
 }

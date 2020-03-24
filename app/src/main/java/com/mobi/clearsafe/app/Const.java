@@ -11,11 +11,11 @@ public class Const {
     /**
      * DEBUG :是用来控制，第三方插件等是否debug状态
      */
-    public static final boolean DEBUG = false;//true 测试服地址 false 正式服地址
+    public static final boolean DEBUG = true;//true 测试服地址 false 正式服地址
 
 
-    public static final String DEBUGUEL="http://dev.findwxapp.com";//测试服配置表域名
-    public static final String RELEASEURL="https://jsonconfig.findwxapp.com";//正式服配置表域名
+    public static final String DEBUGUEL="http://devclean.quanminzoulu.com";//测试服配置表域名
+    public static final String RELEASEURL="https://clean.quanminzoulu.com";//正式服配置表域名
 
 
 

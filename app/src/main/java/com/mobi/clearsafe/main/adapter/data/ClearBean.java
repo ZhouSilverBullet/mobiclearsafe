@@ -15,6 +15,10 @@ public class ClearBean implements MultiItemEntity {
 
     public String dec;
 
+    public int id;
+
+    public int points;
+
     @ColorRes
     public int color = R.color.c_999999;
 

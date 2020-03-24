@@ -9,14 +9,23 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.mobi.clearsafe.R;
+import com.mobi.clearsafe.app.Const;
 import com.mobi.clearsafe.main.adapter.HomeAdapter;
 import com.mobi.clearsafe.main.adapter.data.ClearBean;
+import com.mobi.clearsafe.main.bean.InviteDetail;
+import com.mobi.clearsafe.net.BaseObserver;
+import com.mobi.clearsafe.net.BaseResponse;
+import com.mobi.clearsafe.net.CommonSchedulers;
+import com.mobi.clearsafe.net.OkHttpClientManager;
 import com.mobi.clearsafe.ui.clear.GarbageActivity;
 import com.mobi.clearsafe.ui.clear.control.ClearQQWrap;
 import com.mobi.clearsafe.ui.clear.control.ClearWechatWrap;
+import com.mobi.clearsafe.ui.clear.entity.CleanListBean;
 import com.mobi.clearsafe.ui.clear.util.ItemDivider;
 import com.mobi.clearsafe.ui.clear.widget.wave.MultiWaveHeader;
+import com.mobi.clearsafe.utils.ToastUtils;
 import com.mobi.clearsafe.widget.LazyLoadFragment;
+import com.mobi.clearsafe.wxapi.bean.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +56,7 @@ public class HomeFragment extends LazyLoadFragment implements Handler.Callback {
 
     @Override
     protected void lazyLoad() {
-
+        getCleanList();
     }
 
     @Override
@@ -93,6 +102,44 @@ public class HomeFragment extends LazyLoadFragment implements Handler.Callback {
         clearQQWrap.findQQClear(handler, null, null);
 
 //        StatusBarUtil.setStatusBarColor(getActivity(), R.color.c_008dff);
+        getCleanList();
+    }
+
+    private void getCleanList() {
+        OkHttpClientManager.getInstance().getApiService(Const.getBaseUrl())
+                .getCleanList()
+                .compose(CommonSchedulers.<BaseResponse<CleanListBean>>observableIO2Main(getActivity()))
+                .subscribe(new BaseObserver<CleanListBean>() {
+                    @Override
+                    public void onSuccess(CleanListBean data) {
+                        if (data != null) {
+                            handleData(data);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e, String errorMsg, String code) {
+                        ToastUtils.showShort(errorMsg);
+                    }
+                });
+    }
+
+    private void handleData(CleanListBean data) {
+        List<CleanListBean.ListBean> list = data.getList();
+        if (list.size() != 5) {
+            return;
+        }
+
+        List<ClearBean> dataList = homeAdapter.getData();
+
+        for (int i = 0; i < dataList.size(); i++) {
+            CleanListBean.ListBean listBean = list.get(i + 1);
+            ClearBean clearBean = dataList.get(i);
+            clearBean.id = listBean.getId();
+            clearBean.points = listBean.getPoints();
+        }
+
+        homeAdapter.notifyDataSetChanged();
     }
 
     private List<ClearBean> getRvGridData() {
